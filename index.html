@@ -622,104 +622,28 @@ async function submitAssessment(){
 }
 
 
-function submitToAppsScript(payload){
+async function submitToAppsScript(payload){
+  /*
+    Send a simple cross-origin POST with text/plain.
+    The request is intentionally made with no-cors because we do
+    not need to read the Apps Script response in the learner page.
+    Apps Script receives the JSON through e.postData.contents.
+  */
+  await fetch(DATA.config.endpoint,{
+    method:"POST",
+    mode:"no-cors",
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
+    },
+    body:JSON.stringify(payload),
+    keepalive:true
+  });
 
- return new Promise(
-   (resolve,reject)=>{
-
-     const frameName=
-       "submissionFrame_"+Date.now();
-
-     const iframe=
-       document.createElement("iframe");
-
-     iframe.name=
-       frameName;
-
-     iframe.style.display=
-       "none";
-
-     document.body.appendChild(
-       iframe
-     );
-
-     const form=
-       document.createElement("form");
-
-     form.method=
-       "POST";
-
-     form.action=
-       DATA.config.endpoint;
-
-     form.target=
-       frameName;
-
-     form.style.display=
-       "none";
-
-
-     const input=
-       document.createElement("input");
-
-     input.type=
-       "hidden";
-
-     input.name=
-       "payload";
-
-     input.value=
-       JSON.stringify(payload);
-
-     form.appendChild(
-       input
-     );
-
-     document.body.appendChild(
-       form
-     );
-
-
-     let finished=false;
-
-     const finish=()=>{
-       if(finished)return;
-
-       finished=true;
-
-       setTimeout(()=>{
-         form.remove();
-         iframe.remove();
-       },1000);
-
-       resolve();
-     };
-
-
-     iframe.addEventListener(
-       "load",
-       finish,
-       {once:true}
-     );
-
-
-     form.submit();
-
-
-     /*
-       Google Apps Script can redirect through its servers.
-       Give the request enough time to complete even if the
-       iframe load event behaves differently in the browser.
-     */
-
-     setTimeout(
-       finish,
-       7000
-     );
-
-   }
- );
-
+  /*
+    Allow the Apps Script request a short processing window before
+    the learner sees the completion screen.
+  */
+  await new Promise(resolve=>setTimeout(resolve,1200));
 }
 
 function renderResult(r){
