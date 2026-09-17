@@ -1,23 +1,629 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>VSA</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Sound Detective — Admin Builder</title>
+<style>
+:root{--bg:#0a1020;--panel:#121b30;--panel2:#18243d;--text:#edf3ff;--muted:#9eabc4;--line:#2b3a59;--accent:#70a7ff;--good:#45d39a;--bad:#ff7070;--warn:#f2bb55;--speech:#6ea8fe;--music:#b084ff;--event:#ff9f5b;--ambience:#4fd1c5;--artificial:#f06292}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#080d18,#111a2e);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{max-width:1220px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}.brand{display:flex;gap:11px;align-items:center}.logo{width:44px;height:44px;border-radius:13px;background:#213454;display:grid;place-items:center;font-size:22px}h1{font-size:21px;margin:0}h2{font-size:24px;margin:0 0 6px}h3{font-size:16px;margin:0 0 7px}.sub,.muted,.small{color:var(--muted);font-size:12px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:11px}.nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}.nav button,.btn{border:1px solid var(--line);background:#182640;color:var(--text);padding:10px 13px;border-radius:9px;cursor:pointer}.nav button.active,.btn.primary{background:var(--accent);color:#07101c;border-color:transparent;font-weight:700}.btn.good{background:rgba(69,211,154,.13);border-color:rgba(69,211,154,.4)}.btn.danger{background:rgba(255,112,112,.12);border-color:rgba(255,112,112,.4)}.btn:disabled{opacity:.45;cursor:not-allowed}.screen{display:none}.screen.active{display:block}.card{background:rgba(18,27,48,.96);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}input,select,textarea{width:100%;background:#0c1425;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:10px;outline:none}textarea{min-height:90px;resize:vertical}input:focus,select:focus,textarea:focus,button:focus{outline:2px solid rgba(112,167,255,.65);outline-offset:2px}.actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:14px}.notice{padding:12px;border:1px solid var(--line);background:#0e1729;border-radius:10px;font-size:12px;color:#cbd5e8}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{border-bottom:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}.table th{color:var(--muted);font-weight:600}.mini{padding:10px;border:1px solid var(--line);border-radius:9px;background:#0e1729}.samplebar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:14px;padding:14px;border:1px solid rgba(112,167,255,.35);background:rgba(112,167,255,.07);border-radius:12px}.rowactions{display:flex;gap:5px}.tag{display:inline-block;padding:3px 6px;border-radius:999px;font-size:10px;background:#23314c}.timeline{position:relative;height:105px;background:#091120;border:1px solid var(--line);border-radius:12px;overflow:hidden;touch-action:none}.track{position:absolute;left:18px;right:18px;top:51px;height:4px;background:#34445f}.tick{position:absolute;top:43px;height:20px;width:1px;background:#63718a}.tick span{position:absolute;top:20px;transform:translateX(-50%);font-size:9px;color:#73819a}.seg{position:absolute;top:37px;height:28px;border-radius:6px;border:2px solid currentColor;padding:2px 6px;font-size:10px;font-weight:700;color:#07101c;overflow:hidden;white-space:nowrap;cursor:pointer}.speech{background:var(--speech)}.music{background:var(--music)}.event{background:var(--event)}.ambience{background:var(--ambience)}.artificial{background:var(--artificial)}.builderSeg{margin-top:10px}.qcard{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0e1729;margin-top:9px}.qhead{display:flex;justify-content:space-between;gap:10px}.mcqopt{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.mcqopt label{display:flex;gap:7px;align-items:center;color:#cbd5e8;background:#121d33;border:1px solid var(--line);padding:9px;border-radius:8px}.mcqopt input{width:auto}.hidden{display:none!important}.success{color:var(--good)}.error{color:var(--bad)}.warn{color:var(--warn)}pre{white-space:pre-wrap;word-break:break-word;background:#080e1a;border:1px solid var(--line);padding:12px;border-radius:9px;font-size:11px;max-height:300px;overflow:auto}.footerNote{margin-top:15px;color:var(--muted);font-size:11px}@media(max-width:850px){.grid2,.grid3,.formgrid{grid-template-columns:1fr}.mcqopt{grid-template-columns:1fr}} 
+.video-frame{background:#05080f;border:1px solid var(--line);border-radius:12px;overflow:hidden}.video-frame iframe{display:block;width:100%;aspect-ratio:16/9;border:0}.media-warning{padding:8px 10px;font-size:12px;color:#aebbd0;background:#0d1726}.media-error{padding:18px;border:1px solid #703a3a;background:#241216;border-radius:10px;color:#ffb5b5}</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><div class="logo">🎧</div><div><h1>Sound Detective — Admin Builder</h1><div class="sub">Build, configure, and export a standalone skills-training assessment</div></div></div>
+  <span class="pill">ADMIN MODE</span>
+</header>
+
+<nav class="nav" aria-label="Admin sections">
+  <button class="active" data-screen="setup">1. Setup</button>
+  <button data-screen="practice">2. Practice Clips</button>
+  <button data-screen="questions">3. MCQ Bank</button>
+  <button data-screen="assessment">4. Final Assessment</button>
+  <button data-screen="data">5. Data & Sheets</button>
+  <button data-screen="export">6. Export</button>
+</nav>
+
+<section id="setup" class="screen active">
+  <div class="card">
+    <span class="pill">COURSE CONFIGURATION</span>
+    <h2 style="margin-top:9px">Set up the training experience</h2>
+    <div class="formgrid" style="margin-top:15px">
+      <div><label>Game / course title</label><input id="courseTitle" value="Sound Detective"></div>
+      <div><label>Subtitle</label><input id="courseSubtitle" value="Sound Annotation Skills Trainer"></div>
+      <div><label>Organization / team name</label><input id="orgName" placeholder="Optional"></div>
+      <div><label>One-attempt policy</label><select id="attemptPolicy"><option value="email">One attempt per email</option><option value="token">One attempt per unique access token</option><option value="off">Allow multiple attempts</option></select></div>
+    </div>
+    <div class="notice" style="margin-top:14px"><b>Important:</b> A true one-attempt lock cannot be guaranteed by a standalone HTML file alone. The exported game uses a Google Apps Script endpoint as the server-side source of truth. If the endpoint is not configured, the game can still run, but the one-attempt guarantee is disabled.</div>
+    <div class="samplebar">
+      <div>
+        <b>Need a starting point?</b>
+        <div class="small">Load a complete sample course configuration. It includes practice clips, MCQs, and a sample final answer key that you can replace with your own content.</div>
+      </div>
+      <div class="actions" style="margin-top:0">
+        <button class="btn good" id="loadSample" type="button">Load Sample Data</button>
+        <button class="btn danger" id="clearBuilder" type="button">Clear Builder</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Five sound categories</h3>
+    <div class="grid3">
+      <div class="mini"><b>Speech</b><br><span class="small">Person talking or singing where words can be made out.</span></div>
+      <div class="mini"><b>Music</b><br><span class="small">Music of any kind.</span></div>
+      <div class="mini"><b>Event</b><br><span class="small">Distinct sound from one identifiable source with a start and end.</span></div>
+      <div class="mini"><b>Ambience</b><br><span class="small">Continuous background/environmental sound.</span></div>
+      <div class="mini"><b>Artificial</b><br><span class="small">Synthetic/digitally created sound added to the scene.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="practice" class="screen">
+  <div class="card">
+    <span class="pill">GUIDED PRACTICE</span><h2 style="margin-top:9px">Practice clips</h2>
+    <p class="muted">Add clips learners will use before the final assessment. Use a direct media URL, a hosted MP4/WebM URL, or another browser-playable media source. The URL must permit browser playback.</p>
+    <div class="formgrid" style="margin-top:14px">
+      <div><label>Clip title</label><input id="pTitle" placeholder="e.g., Café scene"></div>
+      <div><label>Media source</label><select id="pMediaType"><option value="direct">Direct Video (MP4/WebM)</option><option value="sharepoint">SharePoint / Stream Embed</option><option value="youtube">YouTube</option></select></div>
+      <div><label>Media URL</label><input id="pUrl" placeholder="https://example.com/clip.mp4"></div>
+      <div class="small" id="pMediaHint">Direct MP4/WebM is recommended for Segmentation and Full annotation because the timeline needs precise playback time.</div>
+      <div><label>Skill focus</label><select id="pSkill"><option>Identification</option><option>Classification</option><option>Segmentation</option><option>Full annotation</option></select></div>
+      <div><label>Difficulty</label><select id="pDiff"><option>Introductory</option><option>Developing</option><option>Challenging</option></select></div>
+      <div><label>Practice instruction</label><input id="pInstruction" placeholder="e.g., Listen and identify every sound category you hear."></div>
+      <div><label>Target / task prompt</label><input id="pTarget" placeholder="e.g., Classify the distinct door-closing sound."></div>
+    </div>
+    <div class="notice" style="margin-top:12px"><b>Practice modes:</b> Identification = identify categories present. Classification = classify a target sound. Segmentation = mark one target sound precisely. Full annotation = identify and annotate multiple sounds across all five timeline lanes.</div>
+    <div class="actions"><button class="btn primary" id="addPractice">Add practice clip</button></div>
+  </div>
+  <div class="card"><h3>Configured practice clips</h3><div id="practiceList"></div></div>
+  <div class="card">
+    <h3>Practice answer key</h3>
+    <p class="muted">Select a practice clip and configure what counts as correct. These keys are used for immediate practice feedback only and are not submitted as learner data.</p>
+    <div id="practiceKeyEditor" style="margin-top:12px"></div>
+  </div>
+</section>
+
+<section id="questions" class="screen">
+  <div class="card">
+    <span class="pill">KNOWLEDGE CHECK</span><h2 style="margin-top:9px">Multiple-choice question bank</h2>
+    <p class="muted">Import a CSV or add questions manually. The CSV format is: <b>question,optionA,optionB,optionC,optionD,correct,explanation</b>. Correct can be A/B/C/D or the exact option text.</p>
+    <div class="formgrid" style="margin-top:14px">
+      <div><label>Import CSV</label><input id="csvFile" type="file" accept=".csv,text/csv"></div>
+      <div><label>Question</label><input id="qText" placeholder="What makes an Event different from Ambience?"></div>
+      <div><label>Option A</label><input id="qA"></div><div><label>Option B</label><input id="qB"></div>
+      <div><label>Option C</label><input id="qC"></div><div><label>Option D</label><input id="qD"></div>
+      <div><label>Correct answer</label><select id="qCorrect"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></div>
+      <div><label>Explanation shown after answering</label><input id="qExplanation"></div>
+    </div>
+    <div class="actions"><button class="btn primary" id="addQuestion">Add question</button></div>
+  </div>
+  <div class="card"><h3>Question bank</h3><div id="questionList"></div></div>
+</section>
+
+<section id="assessment" class="screen">
+  <div class="card">
+    <span class="pill">FINAL ASSESSMENT BUILDER</span><h2 style="margin-top:9px">Configure the actual assessment</h2>
+    <p class="muted">Only this tab's responses are sent to the data endpoint. Practice activity is not submitted as an assessment record.</p>
+    <div class="formgrid" style="margin-top:14px">
+      <div><label>Assessment title</label><input id="aTitle" value="Final Sound Annotation Assessment"></div>
+      <div><label>MCQ count</label><input id="aCount" type="number" min="0" value="5"></div>
+      <div><label>Segmentation clip title</label><input id="aSegTitle" value="Final segmentation task"></div>
+      <div><label>Final media source</label><select id="aSegMediaType"><option value="direct">Direct Video (MP4/WebM)</option><option value="sharepoint">SharePoint / Stream Embed</option><option value="youtube">YouTube</option></select></div>
+      <div><label>Segmentation media URL</label><input id="aSegUrl" placeholder="https://example.com/final-clip.mp4"></div>
+      <div class="small">For SharePoint/Stream, use the video Embed URL, not the ordinary sharing page. For precise segmentation, the media must expose duration/current time to the page, so direct MP4/WebM remains the safest option.</div><div class="notice" style="grid-column:1/-1;margin-top:4px"><b>Recommended:</b> use Direct MP4/WebM for the final segmentation task. YouTube will display the actual embedded video, but its player does not behave like a native HTML5 video element for our precision timeline. SharePoint cannot be used to bypass company iframe/security restrictions.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Final segmentation answer key</h3>
+    <p class="muted">Add every expected segment. Start/end values are in seconds. Only the final assessment uses these answers for scoring and data collection.</p>
+    <div class="formgrid" style="margin-top:12px">
+      <div><label>Start</label><input id="tStart" type="number" min="0" step=".01"></div>
+      <div><label>End</label><input id="tEnd" type="number" min="0" step=".01"></div>
+      <div><label>Category</label><select id="tCat"><option>Speech</option><option>Music</option><option>Event</option><option>Ambience</option><option>Artificial</option></select></div>
+      <div><label>Accepted label(s), comma-separated. Leave blank if no name required.</label><input id="tLabel" placeholder="door closing, door"></div>
+    </div>
+    <div class="actions"><button class="btn primary" id="addTruth">Add expected segment</button></div>
+    <div id="truthList" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <h3>Assessment rules</h3>
+    <div class="formgrid">
+      <div><label>Boundary tolerance (seconds)</label><input id="tolerance" type="number" min="0" step=".01" value=".25"></div>
+      <div><label>Required email?</label><select id="requireEmail"><option value="yes">Yes</option><option value="no">No</option></select></div>
+      <div><label>Show score to learner?</label><select id="showScore"><option value="yes">Yes</option><option value="no">No</option></select></div>
+      <div><label>Shuffle MCQs?</label><select id="shuffleQuestions"><option value="yes">Yes</option><option value="no">No</option></select></div>
+    </div>
+    <div class="notice" style="margin-top:12px">The final assessment will contain two components: (1) multiple-choice knowledge questions and (2) an actual interactive segmentation item. Name and email are collected only when the learner enters the final assessment.</div>
+  </div>
+</section>
+
+<section id="data" class="screen">
+  <div class="card">
+    <span class="pill">DATA COLLECTION</span><h2 style="margin-top:9px">Google Sheets connection</h2>
+    <p class="muted">Use a Google Apps Script Web App as the secure submission receiver. The exported game sends a JSON assessment record to the URL below.</p>
+    <div style="margin-top:14px"><label>Apps Script Web App URL</label><input id="endpoint" placeholder="https://script.google.com/macros/s/DEPLOYMENT_ID/exec"></div>
+    <div class="notice" style="margin-top:13px"><b>Recommended sheet columns:</b> timestamp, attemptId, name, email, assessmentVersion, mcqScore, mcqTotal, detectionScore, classificationScore, timingScore, namingScore, overallScore, submittedAt, answersJson, annotationsJson.</div>
+  </div>
+  <div class="card">
+    <h3>One-attempt protection</h3>
+    <p class="muted">The exported assessment sends the final record to the endpoint. The server must reject duplicate submissions based on the configured policy. The browser also disables the assessment after a successful submission, but that browser lock is only a convenience layer.</p>
+    <div class="notice" style="margin-top:12px">For a stronger deployment, restrict the Apps Script Web App to the intended users/domain and use an access token or organization-issued identifier in addition to email.</div>
+  </div>
+  <div class="card">
+    <h3>Apps Script receiver template</h3>
+    <p class="muted">Copy this into a Google Apps Script project attached to your destination Google Sheet, set the sheet name, then deploy it as a Web App.</p>
+    <pre id="scriptPreview"></pre>
+    <div class="actions"><button class="btn" id="copyScript">Copy script</button></div>
+  </div>
+</section>
+
+<section id="export" class="screen">
+  <div class="card">
+    <span class="pill">PUBLISH</span><h2 style="margin-top:9px">Export the complete learner game</h2>
+    <p class="muted">This creates a standalone HTML file containing the configured course, practice clips, MCQ bank, final segmentation answer key, scoring rules, and Sheets endpoint.</p>
+    <div class="notice" style="margin-top:13px"><b>Before export:</b> verify that the final assessment has at least one segmentation answer key, the media URL is browser-playable, and the Apps Script endpoint is configured if you need server-side data collection and one-attempt enforcement.</div>
+    <div class="grid3" style="margin-top:14px">
+      <div class="mini"><b id="statPractice">0</b><br><span class="small">Practice clips</span></div>
+      <div class="mini"><b id="statQuestions">0</b><br><span class="small">MCQs</span></div>
+      <div class="mini"><b id="statTruth">0</b><br><span class="small">Final segments</span></div>
+    </div>
+    <div class="actions"><button class="btn primary" id="exportGame">Export learner HTML</button><button class="btn" id="downloadConfig">Export JSON config</button></div>
+    <div id="exportStatus" class="notice hidden" style="margin-top:12px"></div>
+  </div>
+  <div class="card"><h3>Deployment architecture</h3><div class="notice">
+    <b>Admin Builder HTML</b> → creates → <b>Learner HTML</b><br><br>
+    Learner completes Final Assessment → sends JSON → <b>Google Apps Script Web App</b> → writes to <b>Google Sheet</b> and rejects duplicate attempt IDs/emails according to the configured policy.
+  </div></div>
+</section>
+
+<script>
+(function(){
+"use strict";
+const state={
+  config:{title:"Sound Detective",subtitle:"Sound Annotation Skills Trainer",org:"",attemptPolicy:"email",endpoint:"",aTitle:"Final Sound Annotation Assessment",aCount:5,aSegTitle:"Final segmentation task",aSegMediaType:"direct",aSegUrl:"",tolerance:.25,requireEmail:"yes",showScore:"yes",shuffleQuestions:"yes"},
+  practice:[],
+  questions:[],
+  truth:[]
+};
+let practiceKeyIndex=-1;
+const SAMPLE_MEDIA_URL = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
+
+function loadSampleData(){
+  const ok = state.practice.length || state.questions.length || state.truth.length;
+  if(ok && !confirm("Loading the sample will replace the current builder content. Continue?")) return;
+
+  state.config = {
+    title:"Sound Detective — Sample Course",
+    subtitle:"Sound Annotation Skills Trainer",
+    org:"Sample Training Team",
+    attemptPolicy:"email",
+    endpoint:"",
+    aTitle:"Final Assessment — Sample",
+    aCount:5,
+    aSegTitle:"Sample final segmentation task — REPLACE MEDIA + ANSWER KEY",
+    aSegMediaType:"direct",
+    aSegUrl:SAMPLE_MEDIA_URL,
+    tolerance:.25,
+    requireEmail:"yes",
+    showScore:"yes",
+    shuffleQuestions:"yes"
+  };
+
+  state.practice = [
+    {id:"sample_p1",title:"Sample Clip 1 — Identification",url:SAMPLE_MEDIA_URL,mediaType:"direct",skill:"Identification",difficulty:"Introductory",instruction:"Listen to the clip and identify the sound categories you hear.",target:"Which sound categories are present?",answerKey:{type:"identification",categories:["Ambience","Event"]}},
+    {id:"sample_p2",title:"Sample Clip 2 — Classification",url:SAMPLE_MEDIA_URL,mediaType:"direct",skill:"Classification",difficulty:"Developing",instruction:"Listen for the target sound and classify it using the five categories.",target:"Classify the distinct footstep sound.",answerKey:{type:"classification",category:"Event"}},
+    {id:"sample_p3",title:"Sample Clip 3 — Segmentation",url:SAMPLE_MEDIA_URL,mediaType:"direct",skill:"Segmentation",difficulty:"Challenging",instruction:"Place a segment over the target sound and set its boundaries as precisely as possible.",target:"Mark the target footstep on the timeline.",answerKey:{type:"segmentation",segments:[{start:2.10,end:2.75,category:"Event",labels:["footstep","footsteps"]}]}},
+    {id:"sample_p4",title:"Sample Clip 4 — Full annotation",url:SAMPLE_MEDIA_URL,mediaType:"direct",skill:"Full annotation",difficulty:"Challenging",instruction:"Identify all relevant sounds, place each on the correct lane, set precise boundaries, and name sounds when required.",target:"Build the complete annotation of the clip.",answerKey:{type:"full",segments:[{start:0.80,end:1.65,category:"Ambience",labels:["rain","rain ambience"]},{start:2.10,end:2.75,category:"Event",labels:["footstep","footsteps"]},{start:3.05,end:3.80,category:"Speech",labels:[]}]}}
+  ];
+
+  state.questions = [
+    {id:"sample_q1",question:"Which category describes a continuous background sound with no single identifiable source or moment?",options:["Speech","Music","Event","Ambience"],correct:"D",explanation:"Ambience covers continuous environmental or background sound."},
+    {id:"sample_q2",question:"A person says a clearly understandable sentence. Which category should be used?",options:["Speech","Music","Event","Artificial"],correct:"A",explanation:"Use Speech when words can be made out."},
+    {id:"sample_q3",question:"A door closes at 00:04 and ends at 00:05. What makes this an Event?",options:["It is continuous background sound.","It is traceable to one source with a start and end.","It contains understandable words.","It must be synthetic."],correct:"B",explanation:"An Event is tied to an identifiable source and has a discernible start/end."},
+    {id:"sample_q4",question:"Which category fits an obviously synthesized beep added to a recording?",options:["Ambience","Speech","Artificial","Music"],correct:"C",explanation:"Artificial is for sounds that were made or added rather than naturally recorded."},
+    {id:"sample_q5",question:"When placing a segment on the timeline, what should the annotator prioritize?",options:["A convenient rounded timestamp","The middle of the sound only","The actual audible start and end","A fixed 5-second duration"],correct:"C",explanation:"Segments should follow the audible boundaries as precisely as the task allows."}
+  ];
+
+  // Illustrative answer key only. The media URL above is a generic public demo clip,
+  // so admins MUST replace both the media and these answer-key segments.
+  state.truth = [
+    {start:0.80,end:1.65,category:"Ambience",labels:["room ambience","background ambience"]},
+    {start:2.10,end:2.75,category:"Event",labels:["footstep","footsteps"]},
+    {start:3.05,end:3.80,category:"Speech",labels:[]},
+    {start:4.15,end:4.95,category:"Music",labels:["music","background music"]},
+    {start:5.20,end:5.55,category:"Artificial",labels:["beep","tone","synthetic beep"]}
+  ];
+
+  syncConfig();
+  $("courseTitle").value=state.config.title;
+  $("courseSubtitle").value=state.config.subtitle;
+  $("orgName").value=state.config.org;
+  $("attemptPolicy").value=state.config.attemptPolicy;
+  $("endpoint").value=state.config.endpoint;
+  $("aTitle").value=state.config.aTitle;
+  $("aCount").value=state.config.aCount;
+  $("aSegTitle").value=state.config.aSegTitle;
+  $("aSegUrl").value=state.config.aSegUrl;
+ if($("aSegMediaType"))$("aSegMediaType").value=state.config.aSegMediaType||"direct";
+  $("tolerance").value=state.config.tolerance;
+  $("requireEmail").value=state.config.requireEmail;
+  $("showScore").value=state.config.showScore;
+  $("shuffleQuestions").value=state.config.shuffleQuestions;
+
+  practiceKeyIndex=0;
+  renderPractice();
+  renderPracticeKeyEditor();
+  renderQuestions();
+  renderTruth();
+  updateStats();
+  alert("Sample data loaded. Review every sample item, replace the media URLs, and replace the final answer key before exporting.");
+}
+
+function clearBuilder(){
+  if(!confirm("Clear all practice clips, MCQs, and final answer-key segments?")) return;
+  state.practice=[];
+  state.questions=[];
+  state.truth=[];
+  practiceKeyIndex=-1;
+  renderPractice();
+  renderPracticeKeyEditor();
+  renderQuestions();
+  renderTruth();
+  updateStats();
+}
+
+const $=id=>document.getElementById(id);
+const categories=["Speech","Music","Event","Ambience","Artificial"];
+const requiredName=["Music","Event","Ambience"];
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+function nav(screen){document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===screen));document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.screen===screen));if(screen==="export")updateStats()}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>nav(b.dataset.screen)));
+
+function syncConfig(){
+ state.config.title=$("courseTitle").value.trim()||"Sound Detective";
+ state.config.subtitle=$("courseSubtitle").value.trim();
+ state.config.org=$("orgName").value.trim();
+ state.config.attemptPolicy=$("attemptPolicy").value;
+ state.config.endpoint=$("endpoint").value.trim();
+ state.config.aTitle=$("aTitle").value.trim();
+ state.config.aCount=Math.max(0,parseInt($("aCount").value)||0);
+ state.config.aSegTitle=$("aSegTitle").value.trim();
+ state.config.aSegMediaType=$("aSegMediaType")?$("aSegMediaType").value:"direct";
+ state.config.aSegUrl=$("aSegUrl").value.trim();
+ state.config.tolerance=Math.max(0,parseFloat($("tolerance").value)||0);
+ state.config.requireEmail=$("requireEmail").value;
+ state.config.showScore=$("showScore").value;
+ state.config.shuffleQuestions=$("shuffleQuestions").value;
+}
+["courseTitle","courseSubtitle","orgName","attemptPolicy","endpoint","aTitle","aCount","aSegTitle","aSegUrl","tolerance","requireEmail","showScore","shuffleQuestions"].forEach(id=>$(id).addEventListener("input",syncConfig));
+["attemptPolicy","requireEmail","showScore","shuffleQuestions"].forEach(id=>$(id).addEventListener("change",syncConfig));
+if($("aSegMediaType"))$("aSegMediaType").addEventListener("change",syncConfig);
+if($("pMediaType"))$("pMediaType").addEventListener("change",()=>{
+ const t=$("pMediaType").value, h=$("pMediaHint");
+ if(h)h.textContent=t==="direct"?"Direct MP4/WebM is recommended for Segmentation and Full annotation because the timeline needs precise playback time.":t==="sharepoint"?"Use a SharePoint/Stream Embed URL. Learners must have permission to view the video. Precise timeline control may depend on the embed/player available.":"YouTube is suitable for Identification/Classification. For Segmentation/Full annotation, use direct MP4/WebM because an embedded YouTube player does not expose the native HTML video timeline.";
+});
+$("loadSample").addEventListener("click",loadSampleData);
+$("clearBuilder").addEventListener("click",clearBuilder);
+
+$("addPractice").addEventListener("click",()=>{
+ const title=$("pTitle").value.trim(),url=$("pUrl").value.trim();
+ if(!title||!url){alert("Enter a clip title and media URL.");return}
+ const skill=$("pSkill").value;
+ let answerKey={type:skill.toLowerCase().replace(/\s+/g,"_"),categories:[],category:"Event",segments:[]};
+ if(skill==="Identification")answerKey={type:"identification",categories:[]};
+ if(skill==="Classification")answerKey={type:"classification",category:"Event"};
+ if(skill==="Segmentation")answerKey={type:"segmentation",segments:[]};
+ if(skill==="Full annotation")answerKey={type:"full",segments:[]};
+ state.practice.push({id:"p_"+Date.now(),title,url,mediaType:$("pMediaType")?$("pMediaType").value:"direct",skill,difficulty:$("pDiff").value,instruction:$("pInstruction").value.trim(),target:$("pTarget").value.trim(),answerKey});
+ ["pTitle","pUrl","pInstruction","pTarget"].forEach(id=>$(id).value="");
+ practiceKeyIndex=state.practice.length-1;renderPractice();renderPracticeKeyEditor();
+});
+function renderPractice(){
+ const rows=state.practice.map((x,i)=>`<tr><td>${esc(x.title)}<div class="small">${esc(x.url)}</div></td><td><b>${esc(x.skill)}</b></td><td>${esc(x.difficulty)}</td><td>${esc(x.instruction||"No custom instruction")}<br><span class="small">${esc(x.target||"No target prompt")}</span></td><td><button class="btn" data-editpk="${i}" type="button">Answer Key</button> <button class="btn danger" data-delp="${i}" type="button">Delete</button></td></tr>`).join("");
+ $("practiceList").innerHTML=state.practice.length?'<table class="table"><tr><th>Title</th><th>Skill</th><th>Difficulty</th><th>Practice setup</th><th></th></tr>'+rows+'</table>':'<div class="muted">No practice clips yet.</div>';
+ document.querySelectorAll("[data-delp]").forEach(b=>b.addEventListener("click",()=>{const i=+b.dataset.delp;state.practice.splice(i,1);if(practiceKeyIndex===i)practiceKeyIndex=-1;else if(practiceKeyIndex>i)practiceKeyIndex--;renderPractice();renderPracticeKeyEditor()}));
+ document.querySelectorAll("[data-editpk]").forEach(b=>b.addEventListener("click",()=>{practiceKeyIndex=+b.dataset.editpk;renderPracticeKeyEditor();document.getElementById("practiceKeyEditor").scrollIntoView({behavior:"smooth",block:"center"})}));
+}
+
+function practiceKeyType(x){
+ const k=String(x.skill||"").toLowerCase();
+ if(k.includes("ident"))return "identification";
+ if(k.includes("classif"))return "classification";
+ if(k.includes("segment"))return "segmentation";
+ return "full";
+}
+function renderPracticeKeyEditor(){
+ const host=$("practiceKeyEditor");if(!host)return;
+ if(!state.practice.length){host.innerHTML='<div class="muted">Add a practice clip first.</div>';return}
+ if(practiceKeyIndex<0||practiceKeyIndex>=state.practice.length)practiceKeyIndex=0;
+ const x=state.practice[practiceKeyIndex];const type=practiceKeyType(x);
+ x.answerKey=x.answerKey||{type};
+ let h='<div class="formgrid"><div><label>Practice clip</label><select id="pkClip">'+state.practice.map((p,i)=>`<option value="${i}" ${i===practiceKeyIndex?"selected":""}>${esc(p.title)} — ${esc(p.skill)}</option>`).join("")+'</select></div><div><label>Mode</label><input value="'+esc(x.skill)+'" disabled></div></div>';
+ if(type==="identification") h+='<div class="card" style="padding:14px;background:#0e1729;margin-top:12px"><label>Expected categories <span class="small">(select all that apply)</span></label><div class="category-grid" style="margin-top:8px">'+["Speech","Music","Event","Ambience","Artificial"].map(c=>`<label class="checkcat"><input type="checkbox" data-pkcat="${c}" ${((x.answerKey.categories||[]).includes(c))?"checked":""}> ${c}</label>`).join("")+'</div><div class="actions"><button class="btn good" id="savePk" type="button">Save Answer Key</button></div></div>';
+ else if(type==="classification") h+='<div class="card" style="padding:14px;background:#0e1729;margin-top:12px"><label>Correct category</label><select id="pkCorrectCat" style="margin-top:8px">'+["Speech","Music","Event","Ambience","Artificial"].map(c=>`<option ${x.answerKey.category===c?"selected":""}>${c}</option>`).join("")+'</select><div class="actions"><button class="btn good" id="savePk" type="button">Save Answer Key</button></div></div>';
+ else {
+   h+='<div class="card" style="padding:14px;background:#0e1729;margin-top:12px"><b>Expected timeline segments</b><p class="small muted">Add the correct segment(s). For Full annotation, add every sound the learner is expected to find.</p><div id="pkSegments"></div><div class="actions"><button class="btn" id="addPkSeg" type="button">＋ Add Expected Segment</button><button class="btn good" id="savePk" type="button">Save Answer Key</button></div></div>';
+ }
+ host.innerHTML=h;
+ $("pkClip").onchange=e=>{practiceKeyIndex=+e.target.value;renderPracticeKeyEditor()};
+ if(type==="identification"){$("savePk").onclick=()=>{x.answerKey={type,categories:[...document.querySelectorAll("[data-pkcat]:checked")].map(z=>z.dataset.pkcat)};alert("Practice identification answer key saved.")};}
+ if(type==="classification"){$("savePk").onclick=()=>{x.answerKey={type,category:$("pkCorrectCat").value};alert("Practice classification answer key saved.")};}
+ if(type==="segmentation"||type==="full"){
+   x.answerKey.segments=x.answerKey.segments||[];
+   const segHost=$("pkSegments");
+   const render=()=>{segHost.innerHTML=x.answerKey.segments.length?x.answerKey.segments.map((g,i)=>`<div class="mini" style="margin-top:8px"><div class="formgrid"><div><label>Start (s)</label><input data-pks="${i}" data-f="start" type="number" min="0" step=".01" value="${Number(g.start).toFixed(2)}"></div><div><label>End (s)</label><input data-pks="${i}" data-f="end" type="number" min="0" step=".01" value="${Number(g.end).toFixed(2)}"></div><div><label>Category</label><select data-pks="${i}" data-f="category">${["Speech","Music","Event","Ambience","Artificial"].map(c=>`<option ${g.category===c?"selected":""}>${c}</option>`).join("")}</select></div><div><label>Accepted label(s)</label><input data-pks="${i}" data-f="labels" value="${esc((g.labels||[]).join(", "))}" placeholder="door slam, door closing"></div></div><div class="actions"><button class="btn danger" data-pkdel="${i}" type="button">Delete expected segment</button></div></div>`).join(""):'<div class="muted">No expected segments yet.</div>';
+     segHost.querySelectorAll("[data-pks]").forEach(el=>el.oninput=()=>{const i=+el.dataset.pks,f=el.dataset.f;if(f==="labels")x.answerKey.segments[i][f]=el.value.split(",").map(v=>v.trim()).filter(Boolean);else if(f==="category")x.answerKey.segments[i][f]=el.value;else x.answerKey.segments[i][f]=parseFloat(el.value)||0});
+     segHost.querySelectorAll("[data-pkdel]").forEach(b=>b.onclick=()=>{x.answerKey.segments.splice(+b.dataset.pkdel,1);render()});
+   };
+   render();
+   $("addPkSeg").onclick=()=>{x.answerKey.segments.push({start:0,end:1,category:"Event",labels:[]});render()};
+   $("savePk").onclick=()=>{x.answerKey.type=type;alert("Practice timeline answer key saved.")};
+ }
+}
+
+function parseCSV(text){
+ const rows=[];let row=[],cell="",quote=false;
+ for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];
+  if(c==='"'&&quote&&n==='"'){cell+='"';i++;continue}
+  if(c==='"'){quote=!quote;continue}
+  if(c===','&&!quote){row.push(cell);cell="";continue}
+  if((c==="\n"||c==="\r")&&!quote){if(c==="\r"&&n==="\n")i++;row.push(cell);if(row.some(v=>v.trim()!==""))rows.push(row);row=[];cell="";continue}
+  cell+=c;
+ }
+ if(cell!==""||row.length){row.push(cell);if(row.some(v=>v.trim()!==""))rows.push(row)}
+ return rows;
+}
+$("csvFile").addEventListener("change",e=>{
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{const rows=parseCSV(r.result);const start=(rows[0]||[]).map(x=>x.toLowerCase().trim()).includes("question")?1:0;
+ rows.slice(start).forEach(x=>{if(x.length>=6)state.questions.push({id:"q_"+Date.now()+"_"+Math.random(),question:x[0],options:[x[1],x[2],x[3],x[4]],correct:normalizeCorrect(x[5],[x[1],x[2],x[3],x[4]]),explanation:x[6]||""})});renderQuestions();alert((rows.length-start)+" question row(s) imported.")};r.readAsText(f);
+});
+function normalizeCorrect(v,opts){const s=String(v).trim();if(/^[ABCD]$/i.test(s))return s.toUpperCase();const idx=opts.findIndex(x=>x.trim().toLowerCase()===s.toLowerCase());return idx>=0?"ABCD"[idx]:"A"}
+$("addQuestion").addEventListener("click",()=>{
+ const q=$("qText").value.trim(),opts=[$("qA").value.trim(),$("qB").value.trim(),$("qC").value.trim(),$("qD").value.trim()];
+ if(!q||opts.some(x=>!x)){alert("Enter the question and all four options.");return}
+ state.questions.push({id:"q_"+Date.now(),question:q,options:opts,correct:$("qCorrect").value,explanation:$("qExplanation").value.trim()});
+ ["qText","qA","qB","qC","qD","qExplanation"].forEach(id=>$(id).value="");renderQuestions();
+});
+function renderQuestions(){
+ $("questionList").innerHTML=state.questions.length?state.questions.map((q,i)=>`<div class="qcard"><div class="qhead"><b>${i+1}. ${esc(q.question)}</b><button class="btn danger" data-delq="${i}" type="button">Delete</button></div><div class="small">A. ${esc(q.options[0])} &nbsp; B. ${esc(q.options[1])} &nbsp; C. ${esc(q.options[2])} &nbsp; D. ${esc(q.options[3])}</div><div class="small" style="margin-top:4px">Correct: ${esc(q.correct)} ${q.explanation?" • "+esc(q.explanation):""}</div></div>`).join(""):'<div class="muted">No questions configured.</div>';
+ document.querySelectorAll("[data-delq]").forEach(b=>b.addEventListener("click",()=>{state.questions.splice(+b.dataset.delq,1);renderQuestions()}));
+}
+
+$("addTruth").addEventListener("click",()=>{
+ let s=parseFloat($("tStart").value),e=parseFloat($("tEnd").value);if(!Number.isFinite(s)||!Number.isFinite(e)||e<=s){alert("Enter valid start/end times.");return}
+ const c=$("tCat").value,l=$("tLabel").value.split(",").map(x=>x.trim()).filter(Boolean);
+ if(requiredName.includes(c)&&!l.length){alert("Music, Event, and Ambience require at least one accepted label.");return}
+ state.truth.push({start:s,end:e,category:c,labels:l});state.truth.sort((a,b)=>a.start-b.start);$("tStart").value="";$("tEnd").value="";$("tLabel").value="";renderTruth();
+});
+function renderTruth(){
+ $("truthList").innerHTML=state.truth.length?'<table class="table"><tr><th>Start</th><th>End</th><th>Category</th><th>Accepted labels</th><th></th></tr>'+state.truth.map((x,i)=>`<tr><td>${x.start.toFixed(2)}s</td><td>${x.end.toFixed(2)}s</td><td><span class="tag">${esc(x.category)}</span></td><td>${esc(x.labels.join(", ")||"Not required")}</td><td><button class="btn danger" data-delt="${i}" type="button">Delete</button></td></tr>`).join("")+"</table>":'<div class="muted">No final answer-key segments configured.</div>';
+ document.querySelectorAll("[data-delt]").forEach(b=>b.addEventListener("click",()=>{state.truth.splice(+b.dataset.delt,1);renderTruth()}));
+}
+const appsScript=`const SHEET_ID = "";
+const RESPONSE_SHEET = "Responses";
+const MCQ_SHEET = "MCQ Results";
+const SEGMENT_SHEET = "Segments";
+const LOCK = LockService.getScriptLock();
+
+function doGet() {
+  return ContentService.createTextOutput("Sound Annotation Assessment endpoint is active.");
+}
+
+function doPost(e) {
+  let data = {};
+  try {
+    const raw = e && e.postData && e.postData.contents ? e.postData.contents : (e && e.parameter && e.parameter.payload ? e.parameter.payload : "");
+    data = JSON.parse(raw || "{}");
+
+    if (String(data.action || "") !== "submit") {
+      return json({ok:false, error:"Invalid action"});
+    }
+
+    LOCK.waitLock(15000);
+
+    const ss = SHEET_ID
+      ? SpreadsheetApp.openById(SHEET_ID)
+      : SpreadsheetApp.getActiveSpreadsheet();
+
+    const responses = getOrCreateSheet(ss, RESPONSE_SHEET, [
+      "timestamp","attemptId","name","email","attemptPolicy","assessmentVersion",
+      "mcqScore","mcqTotal","detectionScore","classificationScore",
+      "timingScore","namingScore","overallScore","submittedAt"
+    ]);
+    const mcqs = getOrCreateSheet(ss, MCQ_SHEET, [
+      "timestamp","attemptId","name","email","questionNumber","question",
+      "learnerAnswer","correctAnswer","result"
+    ]);
+    const segments = getOrCreateSheet(ss, SEGMENT_SHEET, [
+      "timestamp","attemptId","name","email","segmentStatus","segmentNumber",
+      "start","end","timeRange","category","soundName",
+      "expectedStart","expectedEnd","expectedCategory","expectedLabel(s)",
+      "timingCorrect","categoryCorrect","nameCorrect","overallResult"
+    ]);
+
+    const attemptId = String(data.attemptId || "");
+    const email = String(data.email || "").trim().toLowerCase();
+    const policy = String(data.attemptPolicy || "email");
+
+    // Server-side duplicate protection. This is the authoritative check.
+    if (isDuplicate(responses, attemptId, email, policy)) {
+      return json({ok:false, duplicate:true, error:"An assessment response already exists for this identity."});
+    }
+
+    const now = new Date();
+    responses.appendRow([
+      now, attemptId, data.name || "", email, policy, data.assessmentVersion || "",
+      Number(data.mcqScore || 0), Number(data.mcqTotal || 0),
+      Number(data.detectionScore || 0), Number(data.classificationScore || 0),
+      Number(data.timingScore || 0), Number(data.namingScore || 0),
+      Number(data.overallScore || 0), data.submittedAt || ""
+    ]);
+
+    const questions = Array.isArray(data.questions) ? data.questions : [];
+    const answers = Array.isArray(data.answers) ? data.answers : [];
+    const correctAnswers = Array.isArray(data.correctAnswers) ? data.correctAnswers : [];
+
+    questions.forEach(function(q, i) {
+      const learner = answers[i] || "";
+      const correct = correctAnswers[i] || q.correct || "";
+      mcqs.appendRow([
+        now, attemptId, data.name || "", email, i + 1,
+        q.question || "", learner, correct,
+        learner === correct ? "CORRECT" : "INCORRECT"
+      ]);
+    });
+
+    const learnerSegments = Array.isArray(data.annotations) ? data.annotations : [];
+    const truth = Array.isArray(data.truth) ? data.truth : [];
+    const tolerance = Number(data.tolerance || 0.25);
+    const usedTruth = {};
+    const usedLearner = {};
+
+    learnerSegments.forEach(function(u, ui) {
+      let best = -1;
+      let bestGap = Infinity;
+
+      truth.forEach(function(t, ti) {
+        if (usedTruth[ti]) return;
+        const overlap = Math.max(0, Math.min(Number(t.end), Number(u.end)) - Math.max(Number(t.start), Number(u.start)));
+        if (overlap <= 0) return;
+        const gap = (Math.max(Number(t.end), Number(u.end)) - Math.min(Number(t.start), Number(u.start))) - overlap;
+        if (gap < bestGap) {
+          bestGap = gap;
+          best = ti;
+        }
+      });
+
+      if (best >= 0) {
+        usedTruth[best] = true;
+        usedLearner[ui] = true;
+        const t = truth[best];
+        const timingCorrect =
+          Math.abs(Number(u.start) - Number(t.start)) <= tolerance &&
+          Math.abs(Number(u.end) - Number(t.end)) <= tolerance;
+        const categoryCorrect = String(u.category || "") === String(t.category || "");
+        const nameCorrect = !Array.isArray(t.labels) || !t.labels.length
+          ? true
+          : labelOK(u.label, t.labels);
+
+        segments.appendRow([
+          now, attemptId, data.name || "", email, "ANNOTATED", ui + 1,
+          Number(u.start || 0), Number(u.end || 0),
+          formatTime(u.start) + " – " + formatTime(u.end),
+          u.category || "", u.label || "",
+          Number(t.start || 0), Number(t.end || 0),
+          t.category || "", (t.labels || []).join(", "),
+          timingCorrect ? "YES" : "NO",
+          categoryCorrect ? "YES" : "NO",
+          nameCorrect ? "YES" : "NO",
+          timingCorrect && categoryCorrect && nameCorrect ? "CORRECT" : "INCORRECT"
+        ]);
+      } else {
+        segments.appendRow([
+          now, attemptId, data.name || "", email, "EXTRA", ui + 1,
+          Number(u.start || 0), Number(u.end || 0),
+          formatTime(u.start) + " – " + formatTime(u.end),
+          u.category || "", u.label || "",
+          "", "", "", "", "NO", "NO", "NO", "EXTRA"
+        ]);
+      }
+    });
+
+    truth.forEach(function(t, ti) {
+      if (usedTruth[ti]) return;
+      segments.appendRow([
+        now, attemptId, data.name || "", email, "MISSED", "",
+        "", "", "", "", "",
+        Number(t.start || 0), Number(t.end || 0),
+        t.category || "", (t.labels || []).join(", "),
+        "NO", "NO", t.labels && t.labels.length ? "NO" : "N/A", "MISSED"
+      ]);
+    });
+
+    return json({ok:true});
+  } catch (err) {
+    return json({ok:false, error:String(err)});
+  } finally {
+    try { LOCK.releaseLock(); } catch (_) {}
+  }
+}
+
+function getOrCreateSheet(ss, name, headers) {
+  const sheet = ss.getSheetByName(name) || ss.insertSheet(name);
+  if (sheet.getLastRow() === 0) sheet.appendRow(headers);
+  return sheet;
+}
+
+function isDuplicate(sheet, attemptId, email, policy) {
+  if (policy === "off") return false;
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return false;
+  const values = sheet.getRange(2, 1, lastRow - 1, Math.max(4, sheet.getLastColumn())).getValues();
+
+  for (let i = 0; i < values.length; i++) {
+    const oldAttempt = String(values[i][1] || "");
+    const oldEmail = String(values[i][3] || "").trim().toLowerCase();
+    if (policy === "token" && attemptId && oldAttempt === attemptId) return true;
+    if (policy === "email" && email && oldEmail === email) return true;
+  }
+  return false;
+}
+
+function labelOK(userLabel, labels) {
+  const x = String(userLabel || "").toLowerCase().trim();
+  if (!x) return false;
+  return labels.some(function(a) {
+    const y = String(a || "").toLowerCase().trim();
+    return x === y || x.indexOf(y) >= 0 || y.indexOf(x) >= 0;
+  });
+}
+
+function formatTime(sec) {
+  const n = Number(sec || 0);
+  const m = Math.floor(n / 60);
+  const s = (n % 60).toFixed(2).padStart(5, "0");
+  return String(m).padStart(2, "0") + ":" + s;
+}
+
+function json(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
+$("scriptPreview").textContent=appsScript;
+$("copyScript").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(appsScript);alert("Apps Script copied.")}catch(e){alert("Copy is unavailable in this browser. Select and copy the script manually.")}});
+
+function updateStats(){syncConfig();$("statPractice").textContent=state.practice.length;$("statQuestions").textContent=state.questions.length;$("statTruth").textContent=state.truth.length}
+function download(filename,text,mime="text/plain"){const blob=new Blob([text],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$("downloadConfig").addEventListener("click",()=>{syncConfig();download("sound-detective-config.json",JSON.stringify(state,null,2),"application/json")});
+
+function learnerHTML(){
+ syncConfig();
+ const cfg=JSON.parse(JSON.stringify(state)); cfg.config.aSegMediaType=state.config.aSegMediaType||"direct";
+ const learner=String.raw`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>${esc(cfg.config.title)}</title>
 <style>
 :root{--bg:#070c17;--panel:#111a2d;--panel2:#17233a;--panel3:#0b1323;--text:#eef4ff;--muted:#95a3bd;--line:#293957;--accent:#70a7ff;--good:#45d39a;--bad:#ff667a;--warn:#f4c15d;--speech:#6ea8fe;--music:#a978ff;--event:#ffab12;--ambience:#4fd1c5;--artificial:#d98cff}
 *{box-sizing:border-box}body{margin:0;background:#050913;color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{max-width:1080px;margin:auto;padding:18px 8px 40px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.brand{display:flex;gap:10px;align-items:center}.logo{width:42px;height:42px;border-radius:12px;background:#172844;display:grid;place-items:center;font-size:21px}h1{font-size:20px;margin:0}h2{margin:0 0 7px;font-size:24px}.sub,.muted,.small{color:var(--muted);font-size:12px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:10px;color:var(--muted)}.card{background:rgba(17,26,45,.97);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}.screen{display:none}.screen.active{display:block}.progress{height:5px;background:#202c44;border-radius:10px;overflow:hidden;margin:10px 0 16px}.progress>i{display:block;height:100%;background:var(--accent);width:0}.btn{border:1px solid var(--line);background:#16243d;color:var(--text);padding:9px 13px;border-radius:9px;cursor:pointer}.primary{background:var(--accent);color:#07101c;border-color:transparent;font-weight:700}.actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.cat{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px;min-height:120px}.cat b{display:block;margin-bottom:5px}.cat span{color:var(--muted);font-size:11px}.q{font-size:16px;line-height:1.5;margin:12px 0}.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.opt{border:1px solid var(--line);background:#101a2e;color:var(--text);padding:12px;border-radius:9px;text-align:left}.opt.sel{border-color:var(--accent);background:#182d4e}.feedback{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:10px}.good{border-color:rgba(69,211,154,.4);background:rgba(69,211,154,.07)}.bad{border-color:rgba(255,102,122,.4);background:rgba(255,102,122,.07)}input,select{width:100%;background:#080f1e;border:1px solid var(--line);color:var(--text);border-radius:7px;padding:9px}label{font-size:10px;color:var(--muted);display:block;margin-bottom:5px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.media-shell{background:#03060b;border:1px solid #26344f;border-radius:12px;overflow:hidden}.media{display:block;width:100%;height:auto;max-height:360px;min-height:250px;object-fit:cover;background:#03060b;border:0}.youtube,.video-frame iframe{width:100%;aspect-ratio:16/9;border:0;display:block;background:#000}.media-tools{height:34px;padding:8px 12px;color:#8fa2c0;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.3px;border-top:1px solid #1d2b44}.timeline-card{background:#101a2d;border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:10px}.transport{display:flex;align-items:center;justify-content:space-between;gap:10px}.play{background:#00b778;color:#04130e;border:0;border-radius:7px;padding:8px 13px;font-weight:800;cursor:pointer}.speed{font-size:10px;color:#8494ae;border:1px solid var(--line);border-radius:7px;padding:6px 8px}.speed button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:10px}.speed button.active{color:#00e09a;background:#0c2d27;border-radius:4px}.readout{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;background:#07101f;border:1px solid var(--line);border-radius:7px;padding:7px 10px;color:#00e09a}.timeline{position:relative;height:232px;background:#07101c;border:1px solid #273754;border-radius:9px;overflow:hidden;touch-action:none;margin-top:10px}.lane-area{position:absolute;left:92px;right:0;top:0;bottom:27px;overflow:hidden}.lane{position:relative;height:41px;border-bottom:1px solid #1d2a40;box-sizing:border-box}.lane:nth-child(even){background:rgba(255,255,255,.015)}.lane-labels{position:absolute;left:0;top:0;bottom:27px;width:92px;background:#091321;border-right:1px solid #273754;z-index:5}.lane-label{height:41px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:800;box-sizing:border-box;border-bottom:1px solid #1d2a40}.lane-label span{display:inline-flex;align-items:center;gap:5px}.lane-label i{width:7px;height:7px;border-radius:50%;display:inline-block}.lane-label[data-cat="Speech"]{color:var(--speech)}.lane-label[data-cat="Music"]{color:var(--music)}.lane-label[data-cat="Event"]{color:var(--event)}.lane-label[data-cat="Ambience"]{color:var(--ambience)}.lane-label[data-cat="Artificial"]{color:var(--artificial)}.timeline .tick{position:absolute;top:0;bottom:0;width:1px;background:#34435c;z-index:1}.timeline .tick span{position:absolute;top:207px;transform:translateX(-50%);font-size:9px;color:#7f8ea7}.timeline .minor{position:absolute;top:0;bottom:0;width:1px;background:#202e45;z-index:0}.cursor{position:absolute;top:0;bottom:27px;width:2px;background:#0ff0bd;z-index:7;box-shadow:0 0 7px rgba(0,240,189,.45)}.cursor:before{content:"";position:absolute;left:-4px;top:-3px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #0ff0bd}.seg{position:absolute;height:31px;border:2px solid currentColor;border-radius:6px;padding:4px 6px;color:#07101c;font-size:10px;font-weight:800;overflow:hidden;white-space:nowrap;cursor:pointer;z-index:6;box-shadow:0 2px 5px rgba(0,0,0,.2);box-sizing:border-box}.seg.draft{opacity:.65;border-style:dashed;pointer-events:none}.seg.selected{outline:2px solid #fff;outline-offset:1px}.speech{background:var(--speech)}.music{background:var(--music)}.event{background:var(--event)}.ambience{background:var(--ambience)}.artificial{background:var(--artificial)}.timeline-hint{display:flex;justify-content:space-between;color:#7f8ea7;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:7px}.segment-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 10px;background:#050b15;border:1px solid #22304a;border-radius:8px;font-size:11px}.toolbar-time{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#9cabc2}.tiny-control{background:#101b30;border:1px solid var(--line);color:#dbe5f5;border-radius:6px;padding:5px 9px;cursor:pointer}.tiny-danger{color:#ff7d8d;border-color:#743144;background:#200d17}.annotation-panel{margin-top:10px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#111b2e}.annotation-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:13px}.annotation-title{font-size:13px;font-weight:700}.annotation-time{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#00e0a1;background:#061d1a;border-radius:4px;padding:4px 7px}.category-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.category-btn{min-height:60px;border:1px solid var(--line);background:#080f1d;color:#dce6f7;border-radius:8px;cursor:pointer;text-align:center;padding:8px 4px;font-size:11px}.category-btn .icon{display:block;font-size:14px;margin-bottom:2px}.category-btn.selected{border-color:#fff;box-shadow:inset 0 0 0 1px currentColor}.category-btn[data-cat="Speech"].selected{background:rgba(110,168,254,.18);color:var(--speech)}.category-btn[data-cat="Music"].selected{background:rgba(169,120,255,.18);color:var(--music)}.category-btn[data-cat="Event"].selected{background:rgba(255,171,18,.18);color:var(--event)}.category-btn[data-cat="Ambience"].selected{background:rgba(79,209,197,.18);color:var(--ambience)}.category-btn[data-cat="Artificial"].selected{background:rgba(217,140,255,.18);color:var(--artificial)}.annotation-rule{font-size:10px;color:#a4b0c4;margin-top:7px}.name-wrap{margin-top:12px}.name-rule{font-size:10px;color:var(--warn);margin-top:5px}.expected{margin-top:12px;padding:10px;border-radius:8px;background:#061a18;border:1px solid rgba(69,211,154,.28);color:#5de7bb;font-size:11px}.rows{margin-top:9px;display:grid;gap:6px}.row{display:grid;grid-template-columns:72px 72px 1fr 34px;gap:7px;align-items:center;padding:7px 9px;background:#0a1221;border:1px solid var(--line);border-radius:7px;font-size:10px}.row button{background:none;border:0;color:#ff7d8d;font-size:16px;cursor:pointer}.notice{padding:12px;background:#0e1729;border:1px solid var(--line);border-radius:10px;font-size:12px;color:#cbd5e8}.hidden{display:none!important}.score{font-size:32px;font-weight:800}.metric{padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.practice-timeline-card{border-color:#35527d}.practice-ident .category-btn,.practice-classify .category-btn{min-height:72px}.checkcat{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid var(--line);border-radius:8px}
 @media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.opts,.formgrid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.category-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:480px){.grid{grid-template-columns:1fr}.category-grid{grid-template-columns:1fr 1fr}.transport{flex-wrap:wrap}.readout{order:3;width:100%;text-align:center}}
 
 </style></head><body><div class="app">
-<header class="top"><div class="brand"><div class="logo">🎧</div><div><h1>VSA</h1><div class="sub">Sound Annotation Skills Assessment</div></div></div><span class="pill">LEARNER MODE</span></header>
+<header class="top"><div class="brand"><div class="logo">🎧</div><div><h1>${esc(cfg.config.title)}</h1><div class="sub">${esc(cfg.config.subtitle)}</div></div></div><span class="pill">LEARNER MODE</span></header>
 
 <section id="intro" class="screen active"><div class="card"><span class="pill">WELCOME</span><h2 style="margin-top:9px">Train your sound annotation skills</h2><p class="muted">You will learn the five sound categories, practice classification, practice timeline precision, and then complete a final assessment containing knowledge questions and an actual segmentation task.</p><div class="grid" style="margin-top:16px"><div class="cat"><b>🗣 Speech</b><span>Talking or singing where words can be made out.</span></div><div class="cat"><b>🎵 Music</b><span>Music of any kind.</span></div><div class="cat"><b>🔊 Event</b><span>Distinct sound from one identifiable source.</span></div><div class="cat"><b>🌧 Ambience</b><span>Continuous environmental/background sound.</span></div><div class="cat"><b>◇ Artificial</b><span>Synthetic or digitally created sound.</span></div></div><div class="actions"><button class="btn primary" id="begin">Begin training →</button></div></div></section>
 
 <section id="practice" class="screen"><div class="card"><span class="pill">PRACTICE</span><h2 style="margin-top:9px">Guided practice</h2><div id="practiceContent"></div><div class="actions"><button class="btn" id="practiceBack">← Back</button><button class="btn primary" id="practiceNext">Next →</button></div></div></section>
 
-<section id="final" class="screen"><div class="card"><span class="pill">FINAL ASSESSMENT</span><h2 style="margin-top:9px">Final Sound Annotation Assessment</h2><p class="muted">This is the only stage that records an assessment submission.</p><div id="identity" class="card" style="padding:14px;margin-top:14px;background:#0e1729"><div class="formgrid"><div><label>Name</label><input id="name" autocomplete="name"></div><div><label>Email</label><input id="email" type="email" autocomplete="email"></div></div><div class="actions"><button class="btn primary" id="startFinal">Start final assessment</button></div><div id="identityMsg" class="feedback hidden"></div></div><div id="assessmentBody" class="hidden"></div></div></section>
+<section id="final" class="screen"><div class="card"><span class="pill">FINAL ASSESSMENT</span><h2 style="margin-top:9px">${esc(cfg.config.aTitle)}</h2><p class="muted">This is the only stage that records an assessment submission.</p><div id="identity" class="card" style="padding:14px;margin-top:14px;background:#0e1729"><div class="formgrid"><div><label>Name</label><input id="name" autocomplete="name"></div><div><label>Email</label><input id="email" type="email" autocomplete="email"></div></div><div class="actions"><button class="btn primary" id="startFinal">Start final assessment</button></div><div id="identityMsg" class="feedback hidden"></div></div><div id="assessmentBody" class="hidden"></div></div></section>
 
 <section id="result" class="screen"><div class="card"><span class="pill">ASSESSMENT COMPLETE</span><h2 style="margin-top:9px">Your assessment has been submitted</h2><p class="muted" id="resultIntro"></p><div id="resultMetrics" class="metrics" style="margin-top:16px"></div><div class="notice" style="margin-top:14px" id="resultNote"></div></div></section>
 </div>
-<script>
-const DATA={"config":{"title":"VSA","subtitle":"Sound Annotation Skills Assessment","org":"","attemptPolicy":"email","endpoint":"https://script.google.com/macros/s/AKfycbwjHwuTEk4NYCuryImvzkP77mNxqfrqQ7CmP0aL1LK5j6M5WEkrXfHrZz2CAwGE5-lp/exec","aTitle":"Final Sound Annotation Assessment","aCount":10,"aSegTitle":"Final segmentation task (First 10 Seconds Only)","aSegMediaType":"youtube","aSegUrl":"https://www.youtube.com/watch?v=CIMmK86vNYo","tolerance":0.01,"requireEmail":"yes","showScore":"no","shuffleQuestions":"yes"},"practice":[{"id":"p_1789631704897","title":"Clip 1","url":"https://youtu.be/DfcQdEe1rnM","mediaType":"youtube","skill":"Identification","difficulty":"Introductory","instruction":"Listen and identify the categories present.","target":"","answerKey":{"type":"identification","categories":["Event","Ambience"]}},{"id":"p_1789631799647","title":"Clip 2","url":"https://www.youtube.com/watch?v=W85oD8FEF78","mediaType":"youtube","skill":"Identification","difficulty":"Introductory","instruction":"Listen and identify the categories present.","target":"","answerKey":{"type":"identification","categories":["Speech","Music","Event","Ambience"]}},{"id":"p_1789631853855","title":"Clip 3","url":"https://www.youtube.com/watch?v=4tc6h2RGGWM","mediaType":"youtube","skill":"Identification","difficulty":"Introductory","instruction":"Listen and identify the categories present.","target":"","answerKey":{"type":"identification","categories":["Speech","Music","Event"]}}],"questions":[{"id":"sample_q1","question":"Which category describes a continuous background sound with no single identifiable source or moment?","options":["Speech","Music","Event","Ambience"],"correct":"D","explanation":"Ambience covers continuous environmental or background sound."},{"id":"sample_q2","question":"A person says a clearly understandable sentence. Which category should be used?","options":["Speech","Music","Event","Artificial"],"correct":"A","explanation":"Use Speech when words can be made out."},{"id":"sample_q3","question":"A door closes at 00:04 and ends at 00:05. What makes this an Event?","options":["It is continuous background sound.","It is traceable to one source with a start and end.","It contains understandable words.","It must be synthetic."],"correct":"B","explanation":"An Event is tied to an identifiable source and has a discernible start/end."},{"id":"sample_q4","question":"Which category fits an obviously synthesized beep added to a recording?","options":["Ambience","Speech","Artificial","Music"],"correct":"C","explanation":"Artificial is for sounds that were made or added rather than naturally recorded."},{"id":"sample_q5","question":"When placing a segment on the timeline, what should the annotator prioritize?","options":["A convenient rounded timestamp","The middle of the sound only","The actual audible start and end","A fixed 5-second duration"],"correct":"C","explanation":"Segments should follow the audible boundaries as precisely as the task allows."},{"id":"q_1789631961191","question":"Which situation specifically calls for \"I can't tell\" rather than the material-does-not-matter option?","options":["A woman laughs and the sound is clearly a single-source vocalization","Two objects collide, but the recording does not allow you to determine what one object is made of","A bird sings and its physical material cannot be determined from the recording","An engine runs continuously and its construction material is irrelevant"],"correct":"B","explanation":""},{"id":"q_1789631993279","question":"Scenario An annotator completes the Speech, Music, Events, Ambience, and Artificial annotations separately. When reviewing the final combined view, they notice that an Event bar overlaps with a Music bar along the timeline, even though both annotations were correctly placed within their respective rows. Is this overlap acceptable?","options":["No. An Event annotation must never overlap with a Music annotation, regardless of their rows, since these must be distinguishable.","No. Only the annotation created first should remain when two categories overlap in time.","Yes, because the Event and Music annotations are on different rows and can occur at the same time.","Yes, but only if the Event annotation is shorter than the Music annotation, such that, it is clearly separable from the overlapping sound."],"correct":"C","explanation":""},{"id":"q_1789632029039","question":"Scenario A man is explaining how to repair a bicycle while background music plays continuously.  At 00:07, he says \"tighten the bolt.\" At 00:08, a wrench slips and hits the floor.  The man continues speaking without interruption. The music continues underneath everything. The wrench impact is clearly distinguishable from the speech and music.  Which annotation is most appropriate?","options":["Put speech, music, and the wrench impact on one row because all three occur within the same continuous section of the recording.","Put the speech and music on separate rows, and place the wrench impact on the man's Speech row because it occurs during his explanation.","Put the speech and wrench impact together as Events because the impact interrupts the spoken explanation, while Music remains separate.","Put the man's speech, music, and wrench impact on separate rows. Classify the impact as Events and annotate its relevant details."],"correct":"D","explanation":""},{"id":"q_1789632057824","question":"Scenario A loud impact occurs behind a closed door. The impact is unmistakable and can be cleanly placed on the timeline. However, neither the object that was struck nor its material can be identified from the recording.  What is the best annotation approach?","options":["Annotate the Event and note the most likely material based on the sound's apparent acoustic character.","Annotate the Event and enter none where no material that matters can be provided.","Report the clip as bad because an Event cannot be completed without identifying its material.","Skip the event because the missing material prevents a complete annotation."],"correct":"B","explanation":""},{"id":"q_1789632085807","question":"Scenario You are annotating a 35-second clip recorded at an outdoor café.  From 00:00 to 00:35, there is steady street noise: distant traffic, indistinct crowd chatter, and wind. No single car or voice can be isolated. From 00:04 to 00:26, a guitarist plays on camera. From 00:08 to 00:20, one person sings clear lyrics. From 00:15 to 00:18, another person joins with a short harmony, also with clear words. At 00:11, a ceramic cup is placed on a wooden table with a low thud. At 00:22, a notification ding is clearly added over the video.  What is the best annotation approach?","options":["Use one Music bar from 00:04–00:26 for the guitar and singing together | mark the street noise as separate Ambience bars for traffic, crowd, and wind between 00:00 to 00:35 | ignore the notification ding at 00:22 because it is not part of the real scene.","Use one Ambience bar from 00:00–00:35 naming the street/background mix | one Music bar from 00:04–00:26 | one guitar instrument row from 00:04–00:26 named guitar | one Speech row for the lead singer from 00:08–00:20 | one separate Speech row for the harmony singer from 00:15–00:18 |one Events bar for the cup set-down | one Artificial bar for the notification ding.","Use one Speech row from 00:08–00:18 for both singers because they are part of the same song | one Music bar from 00:04–00:26 | one instrument row from 00:04–00:26 named guitar |  use one Events bar for the street noise from 00:00 to 00:35 because cars and people are visible | mark the notification ding at 00:22 as Music because it has a pitch.","Use one Ambience bar for the full clip | one Music bar for the full clip | one Events bar covering all short sounds so the annotation stays simple."],"correct":"B","explanation":""}],"truth":[{"start":0,"end":0.02,"category":"Speech","labels":[]},{"start":0.03,"end":0.05,"category":"Speech","labels":[]},{"start":0.06,"end":0.07,"category":"Speech","labels":[]},{"start":0.07,"end":0.08,"category":"Speech","labels":[]},{"start":0.08,"end":0.1,"category":"Music","labels":["instrument"]}]};
+${"<script>"}
+const DATA=${JSON.stringify(cfg)};
 const $=id=>document.getElementById(id);
 const reqName=["Music","Event","Ambience"];
 let practiceIndex=0,answers=[],annotations=[],finalStarted=false,submitted=false,attemptId=(globalThis.crypto&&globalThis.crypto.randomUUID)?globalThis.crypto.randomUUID():"att_"+Date.now()+"_"+Math.random().toString(36).slice(2);
@@ -29,10 +635,6 @@ function detectMediaType(url,configured){
   if(/youtube\.com|youtu\.be/.test(u)) return "youtube";
   if(/sharepoint\.com|1drv\.ms/.test(u)) return "sharepoint";
   return "direct";
-}
-function youtubeHostingWarning(){
-  return (location.protocol==="file:"||location.protocol==="") ?
-    '<div class="notice" style="margin-top:10px"><b>YouTube requires a hosted learner.</b> Error 153 means YouTube did not receive the required HTTP Referer. Open the exported learner from an HTTPS web address, not by double-clicking the .html file.</div>' : "";
 }
 function youtubeId(url){
   try{
@@ -56,10 +658,7 @@ function mediaHTML(url,configured){
   if(type==="youtube"){
     const id=youtubeId(url);
     if(!id)return '<div class="media-error"><b>Invalid YouTube URL.</b> Paste a normal watch URL such as https://www.youtube.com/watch?v=VIDEO_ID.</div>';
-    const hostOrigin=(location.protocol==="http:"||location.protocol==="https:")?location.origin:"";
-    const originParam=hostOrigin?"&origin="+encodeURIComponent(hostOrigin):"";
-    const localWarning=hostOrigin?"":"<div class=\"media-warning\"><b>Important:</b> This learner is being opened as a local file. YouTube Error 153 can occur because local files do not provide the HTTP Referer that YouTube requires. Host the learner on HTTPS (for example Netlify, GitHub Pages, or your organization's web server) for the embedded player to load.</div>";
-    return '<div class="video-frame"><iframe id="taskYouTube" class="youtube" src="https://www.youtube.com/embed/'+encodeURIComponent(id)+'?enablejsapi=1&playsinline=1&rel=0'+originParam+'" title="YouTube training video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>'+localWarning+'</div>';
+    return '<div class="video-frame"><iframe class="youtube" src="https://www.youtube.com/embed/'+encodeURIComponent(id)+'?enablejsapi=1&playsinline=1&rel=0" title="YouTube training video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><div class="media-warning"><b>YouTube player:</b> the actual video is embedded here. For exact timeline annotation, use Direct MP4/WebM.</div></div>';
   }
   if(type==="sharepoint"){
     return '<div class="video-frame"><iframe src="'+esc(url)+'" title="SharePoint / Stream video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe><div class="media-warning"><b>SharePoint / Stream:</b> this uses the supplied embed URL. Company SharePoint policies can block iframe playback; the learner must have permission. There is no browser-side bypass for those policies.</div></div>';
@@ -109,6 +708,9 @@ $("startFinal").onclick=async()=>{
  const name=$("name").value.trim(),email=$("email").value.trim();
  if(!name){$("identityMsg").className="feedback bad";$("identityMsg").textContent="Please enter your name.";return}
  if(DATA.config.requireEmail==="yes"&&(!email||!email.includes("@"))){$("identityMsg").className="feedback bad";$("identityMsg").textContent="Please enter a valid email address.";return}
+ if(DATA.config.endpoint){
+   try{const r=await fetch(DATA.config.endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"check",attemptId,email})});const j=await r.json();if(j.duplicate){$("identityMsg").className="feedback bad";$("identityMsg").textContent="This assessment has already been submitted for this identity.";return}}catch(e){$("identityMsg").className="feedback bad";$("identityMsg").textContent="The assessment server could not be reached. Please contact the administrator.";return}
+ }
  finalStarted=true;answers=[];annotations=[];$("identity").classList.add("hidden");buildAssessment();
 };
 
@@ -122,312 +724,30 @@ function buildAssessment(){
  h+=mediaHTML(DATA.config.aSegUrl,DATA.config.aSegMediaType);
  h+='<div class="timeline-card"><div class="transport"><div style="display:flex;gap:7px;align-items:center"><button type="button" class="play" id="playBtn">▶ PLAY</button><div class="speed"><span>RATE:</span> <button type="button" data-rate="0.5">0.5x</button> <button type="button" data-rate="1" class="active">1x</button> <button type="button" data-rate="1.5">1.5x</button></div></div><div class="readout">PLAYHEAD: <span id="playhead">00:00.000</span> <span style="color:#66758d">/ <span id="durationReadout">00:00.000</span></span></div><button type="button" class="btn" id="newSeg">＋ Add Segment</button></div><div class="timeline" id="tl"><div class="lane-labels"><div class="lane-label" data-cat="Speech"><span><i></i>Speech</span></div><div class="lane-label" data-cat="Music"><span><i></i>Music</span></div><div class="lane-label" data-cat="Event"><span><i></i>Event</span></div><div class="lane-label" data-cat="Ambience"><span><i></i>Ambience</span></div><div class="lane-label" data-cat="Artificial"><span><i></i>Artificial</span></div></div><div class="lane-area" id="laneArea"><div class="lane" data-cat="Speech"></div><div class="lane" data-cat="Music"></div><div class="lane" data-cat="Event"></div><div class="lane" data-cat="Ambience"></div><div class="lane" data-cat="Artificial"></div><div id="ticks"></div><div id="segroot"></div><div id="cursor" class="cursor"></div></div></div><div class="timeline-hint"><span>Tip: click &amp; drag on timeline to create segment · click segment to edit</span><span id="segCount">0 segments placed</span></div><div id="selectedBar" class="segment-toolbar hidden"></div></div>';
  h+='<div id="annotationPanel" class="annotation-panel hidden"></div><div class="expected">✣ Expected layer marked: Double-check your sound name and boundary precision before submitting.</div><div class="rows" id="rows"></div></div><div class="actions"><button class="btn primary" id="submit">Submit for Review</button></div><div id="submitMsg" class="feedback hidden"></div>';
- body.innerHTML=h;makeTicks();bindAssessment();initMediaSync();if(typeof YT!=="undefined"&&YT.Player)setupYouTubePlayer();
+ body.innerHTML=h;makeTicks();bindAssessment();initMediaSync();
 }
+function durationSec(){const m=$("taskMedia");return m&&Number.isFinite(m.duration)&&m.duration>0?m.duration:15}
 function timeText(sec){sec=Math.max(0,Number(sec)||0);const m=Math.floor(sec/60),s=sec-m*60;return String(m).padStart(2,"0")+":"+s.toFixed(3).padStart(6,"0")}
 function makeTicks(){const d=durationSec(),area=$("laneArea");if(!area)return;const ticks=$("ticks");ticks.innerHTML="";const major=Math.max(1,Math.ceil(d/8));for(let t=0;t<=d+0.001;t+=major){const x=t/d*100;const el=document.createElement("div");el.className="tick";el.style.left=x+"%";el.innerHTML="<span>"+timeText(t).replace(/^00:/,"")+"</span>";ticks.appendChild(el)}for(let t=0;t<=d;t+=Math.max(.5,major/2)){const el=document.createElement("div");el.className="minor";el.style.left=(t/d*100)+"%";ticks.appendChild(el)}}
-let ytPlayer=null;
-let ytReady=false;
-let ytTimer=null;
-
-function setupYouTubePlayer(){
-  const iframe=document.querySelector("#assessmentBody #taskYouTube");
-  if(!iframe || typeof YT==="undefined" || !YT.Player)return;
-
-  if(ytPlayer){
-    try{ytPlayer.destroy()}catch(e){}
-    ytPlayer=null;
-  }
-
-  ytPlayer=new YT.Player("taskYouTube",{
-    events:{
-      onReady:function(){
-        ytReady=true;
-        makeTicks();
-        const d=ytPlayer.getDuration();
-        if(Number.isFinite(d)&&d>0){
-          $("durationReadout").textContent=timeText(d);
-          updateCursor(ytPlayer.getCurrentTime());
-        }
-        if(ytTimer)clearInterval(ytTimer);
-        ytTimer=setInterval(()=>{
-          if(ytPlayer && ytReady){
-            const t=ytPlayer.getCurrentTime();
-            updateCursor(t);
-          }
-        },100);
-      },
-      onStateChange:function(e){
-        if(e.data===YT.PlayerState.PLAYING){
-          $("playBtn").textContent="❚❚ PAUSE";
-        }else{
-          $("playBtn").textContent="▶ PLAY";
-        }
-      }
-    },
-    playerVars:{
-      playsinline:1,
-      rel:0
-    }
-  });
-}
-
-function seekTaskMedia(t){
-  t=Math.max(0,Number(t)||0);
-  if(ytPlayer&&ytReady){
-    ytPlayer.seekTo(t,true);
-    updateCursor(t);
-    return;
-  }
-  const m=$("taskMedia");
-  if(m){
-    m.currentTime=t;
-    updateCursor(t);
-  }
-}
-
 function initMediaSync(){
-  const m=$("taskMedia"),area=$("laneArea");
-
-  if(m){
-    m.addEventListener("loadedmetadata",()=>{
-      makeTicks();
-      $("durationReadout").textContent=timeText(m.duration);
-      updateCursor(0);
-    });
-
-    m.addEventListener("timeupdate",()=>{
-      updateCursor(m.currentTime);
-    });
-
-    m.addEventListener("play",()=>$("playBtn").textContent="❚❚ PAUSE");
-    m.addEventListener("pause",()=>$("playBtn").textContent="▶ PLAY");
-
-    $("playBtn").onclick=()=>{
-      if(m.paused)m.play();
-      else m.pause();
-    };
-
-    document.querySelectorAll("[data-rate]").forEach(b=>{
-      b.onclick=()=>{
-        m.playbackRate=+b.dataset.rate;
-        document.querySelectorAll("[data-rate]").forEach(x=>x.classList.toggle("active",x===b));
-      };
-    });
-
-  }else{
-    $("durationReadout").textContent="Loading player…";
-
-    $("playBtn").onclick=()=>{
-      if(!ytPlayer || !ytReady){
-        $("submitMsg") && ($("submitMsg").textContent="The video player is still loading. Please wait a moment and try again.");
-        return;
-      }
-
-      const state=ytPlayer.getPlayerState();
-
-      if(state===YT.PlayerState.PLAYING){
-        ytPlayer.pauseVideo();
-      }else{
-        ytPlayer.playVideo();
-      }
-    };
-
-    document.querySelectorAll("[data-rate]").forEach(b=>{
-      b.onclick=()=>{
-        if(ytPlayer && ytReady){
-          ytPlayer.setPlaybackRate(+b.dataset.rate);
-        }
-        document.querySelectorAll("[data-rate]").forEach(x=>x.classList.toggle("active",x===b));
-      };
-    });
-
-    if(typeof YT!=="undefined" && YT.Player){
-      setupYouTubePlayer();
-    }
-  }
-
-  if(!area)return;
-
-  area.addEventListener("pointerdown",e=>{
-    if(e.target.closest(".seg"))return;
-
-    const r=area.getBoundingClientRect();
-    const d=durationSec();
-    if(!Number.isFinite(d)||d<=0)return;
-    const clickedTime=Math.max(0,Math.min(d,(e.clientX-r.left)/r.width*d));
-
-    // Clicking the timeline background seeks the video.
-    // Dragging inside a category lane creates a segment.
-    if(!e.target.closest(".lane")){
-      seekTaskMedia(clickedTime);
-      return;
-    }
-
-    const lane=e.target.closest(".lane");
-
-    if(!Number.isFinite(d)||d<=0){
-      alert("The video is still loading. Please wait until the timeline duration appears.");
-      return;
-    }
-
-    const clamp=v=>Math.max(0,Math.min(d,v));
-
-    const start=clamp((e.clientX-r.left)/r.width*d);
-    let current=start;
-    let dragging=true;
-
-    const draft=document.createElement("div");
-    draft.className="seg draft "+lane.dataset.cat.toLowerCase();
-    draft.style.left=(start/d*100)+"%";
-    draft.style.width="0.5%";
-    draft.style.top=(Array.from(area.querySelectorAll(".lane")).indexOf(lane)*41+5)+"px";
-    draft.textContent=lane.dataset.cat;
-    area.appendChild(draft);
-
-    const move=ev=>{
-      if(!dragging)return;
-
-      current=clamp(
-        (ev.clientX-r.left)/r.width*d
-      );
-
-      const st=Math.min(start,current);
-      const en=Math.max(start,current);
-
-      draft.style.left=(st/d*100)+"%";
-      draft.style.width=Math.max(
-        0.5,
-        (en-st)/d*100
-      )+"%";
-    };
-
-    const up=()=>{
-      dragging=false;
-
-      window.removeEventListener(
-        "pointermove",
-        move
-      );
-
-      window.removeEventListener(
-        "pointerup",
-        up
-      );
-
-      draft.remove();
-
-      const st=Math.min(start,current);
-      const en=Math.max(start,current);
-
-      openAnnotation({
-        start:st,
-        end:Math.max(st+0.05,en),
-        category:lane.dataset.cat,
-        label:"",
-        index:-1
-      });
-    };
-
-    window.addEventListener(
-      "pointermove",
-      move
-    );
-
-    window.addEventListener(
-      "pointerup",
-      up
-    );
-
-    move(e);
-  });
-
-  /*
-    Clicking the timeline background moves the video playhead
-    without creating a segment. Dragging inside a category lane
-    creates a segment.
-  */
-  area.addEventListener("click",e=>{
-    if(e.target.closest(".seg"))return;
-    if(e.target.closest(".lane"))return;
-
-    const d=durationSec();
-    if(!Number.isFinite(d)||d<=0)return;
-
-    const r=area.getBoundingClientRect();
-    const t=Math.max(
-      0,
-      Math.min(
-        d,
-        (e.clientX-r.left)/r.width*d
-      )
-    );
-
-    seekMedia(t);
-  });
+ const m=$("taskMedia"),tl=$("tl"),area=$("laneArea");
+ if(m){m.addEventListener("loadedmetadata",()=>{makeTicks();$("durationReadout").textContent=timeText(m.duration);updateCursor(0)});m.addEventListener("timeupdate",()=>updateCursor(m.currentTime));m.addEventListener("play",()=>$ ("playBtn").textContent="❚❚ PAUSE");m.addEventListener("pause",()=>$ ("playBtn").textContent="▶ PLAY");$("playBtn").onclick=()=>m.paused?m.play():m.pause();document.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{m.playbackRate=+b.dataset.rate;document.querySelectorAll("[data-rate]").forEach(x=>x.classList.toggle("active",x===b))});}
+ else {$("durationReadout").textContent="Use player";$("playBtn").onclick=()=>alert("Use the embedded video player controls above. For exact start/end timing, the final assessment should use a Direct MP4/WebM source.")}
+ if(!area)return;
+ area.addEventListener("pointerdown",e=>{
+   if(e.target.closest(".seg"))return;
+   const lane=e.target.closest(".lane"); if(!lane)return;
+   const r=area.getBoundingClientRect(),d=durationSec();
+   const clamp=v=>Math.max(0,Math.min(d,v));
+   const start=clamp((e.clientX-r.left)/r.width*d); let current=start; let dragging=true;
+   const draft=document.createElement("div");draft.className="seg draft "+lane.dataset.cat.toLowerCase();draft.style.left=(start/d*100)+"%";draft.style.width="0.5%";draft.style.top=(Array.from(area.querySelectorAll(".lane")).indexOf(lane)*41+5)+"px";draft.textContent=lane.dataset.cat;area.appendChild(draft);
+   const move=ev=>{if(!dragging)return;current=clamp((ev.clientX-r.left)/r.width*d);const st=Math.min(start,current),en=Math.max(start,current);draft.style.left=(st/d*100)+"%";draft.style.width=Math.max(.5,(en-st)/d*100)+"%"};
+   const up=()=>{dragging=false;window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);draft.remove();const st=Math.min(start,current),en=Math.max(start,current);openAnnotation({start:st,end:Math.max(st+.05,en),category:lane.dataset.cat,label:"",index:-1});};
+   window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);move(e);
+ });
 }
-
-function seekMedia(t){
-  const m=$("taskMedia");
-
-  if(m){
-    m.currentTime=t;
-    updateCursor(t);
-    return;
-  }
-
-  if(ytPlayer && ytReady){
-    ytPlayer.seekTo(t,true);
-    updateCursor(t);
-  }
-}
-
-function durationSec(){
-  const m=$("taskMedia");
-
-  if(
-    m &&
-    Number.isFinite(m.duration) &&
-    m.duration>0
-  ){
-    return m.duration;
-  }
-
-  if(
-    ytPlayer &&
-    ytReady
-  ){
-    const d=ytPlayer.getDuration();
-
-    if(Number.isFinite(d)&&d>0){
-      return d;
-    }
-  }
-
-  return 0;
-}
-
-function updateCursor(t){
-  const d=durationSec();
-
-  if($("cursor")&&d>0){
-    $("cursor").style.left=
-      Math.max(
-        0,
-        Math.min(
-          100,
-          t/d*100
-        )
-      )+"%";
-  }
-
-  if($("playhead")){
-    $("playhead").textContent=
-      timeText(t);
-  }
-}
-
 let selectedIndex=-1;
+function updateCursor(t){const d=durationSec();if($("cursor"))$("cursor").style.left=Math.max(0,Math.min(100,t/d*100))+"%";if($("playhead"))$("playhead").textContent=timeText(t);}
 function bindAssessment(){
  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const q=+b.dataset.q;document.querySelectorAll('.opt[data-q="'+q+'"]').forEach(x=>x.classList.remove("sel"));b.classList.add("sel");answers[q]=b.dataset.a});
  $("newSeg").onclick=()=>openAnnotation({start:0,end:Math.min(1.5,durationSec()),category:"Event",label:"",index:-1});
@@ -462,201 +782,38 @@ function evaluate(){
 }
 async function submitAssessment(){
  if(submitted)return;
-
- const qTotal=
-   DATA.questions.slice(
-     0,
-     DATA.config.aCount
-   ).length;
-
- if(
-   answers.filter(Boolean).length<
-   qTotal
- ){
-   $("submitMsg").className=
-     "feedback bad";
-
-   $("submitMsg").textContent=
-     "Please answer every knowledge question before submitting.";
-
-   return;
- }
-
- if(!annotations.length){
-   $("submitMsg").className=
-     "feedback bad";
-
-   $("submitMsg").textContent=
-     "Add at least one segmentation annotation before submitting.";
-
-   return;
- }
-
- const r=evaluate();
-
- const name=
-   $("name").value.trim();
-
- const email=
-   $("email").value.trim();
-
- /*
-   Send the answer key and truth data as well as the
-   learner's answers. The Apps Script uses these to create
-   the itemized MCQ Results and Segments tabs.
- */
- const qs=
-   DATA.questions.slice(
-     0,
-     DATA.config.aCount
-   );
-
- const correctAnswers=
-   qs.map(q=>q.correct||"");
-
- const questions=
-   qs.map(q=>q.question||"");
-
- const payload={
-   action:"submit",
-
-   attemptId,
-
-   name,
-
-   email,
-
-   attemptPolicy:
-     DATA.config.attemptPolicy,
-
-   assessmentVersion:"v2",
-
-   mcqScore:
-     r.mcqCorrect,
-
-   mcqTotal:
-     r.mcqTotal,
-
-   detectionScore:
-     Math.round(r.det*100),
-
-   classificationScore:
-     Math.round(r.cl*100),
-
-   timingScore:
-     Math.round(r.tm*100),
-
-   namingScore:
-     Math.round(r.nm*100),
-
-   overallScore:
-     r.overall,
-
-   submittedAt:
-     new Date().toISOString(),
-
-   answers,
-
-   correctAnswers,
-
-   questions,
-
-   annotations,
-
-   truth:DATA.truth,
-
-   tolerance:
-     Number(DATA.config.tolerance)||0
- };
-
+ const qTotal=DATA.questions.slice(0,DATA.config.aCount).length;if(answers.filter(Boolean).length<qTotal){$("submitMsg").className="feedback bad";$("submitMsg").textContent="Please answer every knowledge question before submitting.";return}
+ if(!annotations.length){$("submitMsg").className="feedback bad";$("submitMsg").textContent="Add at least one segmentation annotation before submitting.";return}
+ const r=evaluate(),name=$("name").value.trim(),email=$("email").value.trim();
+ const payload={action:"submit",attemptId,name,email,attemptPolicy:DATA.config.attemptPolicy,assessmentVersion:"v1",mcqScore:r.mcqCorrect,mcqTotal:r.mcqTotal,detectionScore:Math.round(r.det*100),classificationScore:Math.round(r.cl*100),timingScore:Math.round(r.tm*100),namingScore:Math.round(r.nm*100),overallScore:r.overall,submittedAt:new Date().toISOString(),answers,annotations,questions:DATA.questions.slice(0,DATA.config.aCount),correctAnswers:DATA.questions.slice(0,DATA.config.aCount).map(q=>q.correct),truth:DATA.truth,tolerance:DATA.config.tolerance};
  if(DATA.config.endpoint){
-
-   $("submitMsg").className=
-     "feedback";
-
-   $("submitMsg").textContent=
-     "Submitting assessment…";
-
-   $("submit").disabled=true;
-
-   try{
-
-     /*
-       Use a normal form POST rather than fetch().
-       This avoids the cross-origin response problem with
-       Google Apps Script.
-     */
-
-     await submitToAppsScript(payload);
-
-     submitted=true;
-
-     localStorage.setItem(
-       "soundDetectiveSubmitted:"+
-       ((email||attemptId).toLowerCase()),
-       "1"
-     );
-
-     show("result");
-     renderResult(r);
-
-   }catch(e){
-
-     $("submit").disabled=false;
-
-     $("submitMsg").className=
-       "feedback bad";
-
-     $("submitMsg").textContent=
-       "Submission could not be completed. Your answers are still on this page. Please try again. If it continues, contact the administrator.";
-
-   }
-
-   return;
+  $("submitMsg").className="feedback";$("submitMsg").textContent="Submitting assessment…";$("submit").disabled=true;
+  try{
+   const form=document.createElement("form");
+   form.method="POST";form.action=DATA.config.endpoint;form.target="soundDetectiveSubmitFrame";form.style.display="none";
+   const field=document.createElement("input");
+   field.type="hidden";field.name="payload";field.value=JSON.stringify(payload);
+   form.appendChild(field);document.body.appendChild(form);form.submit();
+   setTimeout(()=>{try{form.remove()}catch(_){}},1500);
+  }catch(e){
+   $("submit").disabled=false;$("submitMsg").className="feedback bad";$("submitMsg").textContent="Submission could not be sent. Please contact the training administrator.";return
+  }
  }
-
- submitted=true;
-
- show("result");
- renderResult(r);
+ submitted=true;localStorage.setItem("soundDetectiveSubmitted:"+((email||attemptId).toLowerCase()),"1");
+ show("result");renderResult(r);
 }
-
-
-async function submitToAppsScript(payload){
-  /*
-    Send a simple cross-origin POST with text/plain.
-    The request is intentionally made with no-cors because we do
-    not need to read the Apps Script response in the learner page.
-    Apps Script receives the JSON through e.postData.contents.
-  */
-  await fetch(DATA.config.endpoint,{
-    method:"POST",
-    mode:"no-cors",
-    headers:{
-      "Content-Type":"text/plain;charset=utf-8"
-    },
-    body:JSON.stringify(payload),
-    keepalive:true
-  });
-
-  /*
-    Allow the Apps Script request a short processing window before
-    the learner sees the completion screen.
-  */
-  await new Promise(resolve=>setTimeout(resolve,1200));
-}
-
 function renderResult(r){
  $("resultIntro").textContent=DATA.config.showScore==="yes"?"Your response was recorded and your performance has been summarized below.":"Your response was recorded.";
  if(DATA.config.showScore==="yes")$("resultMetrics").innerHTML='<div class="metric"><div class="score">'+r.overall+'%</div><div class="small">Overall</div></div><div class="metric"><b>'+r.mcqCorrect+'/'+r.mcqTotal+'</b><div class="small">Knowledge</div></div><div class="metric"><b>'+Math.round(r.det*100)+'%</b><div class="small">Detection</div></div><div class="metric"><b>'+Math.round(r.tm*100)+'%</b><div class="small">Timeline precision</div></div>';
  else $("resultMetrics").innerHTML="";
  $("resultNote").textContent="Thank you. Your final assessment response has been submitted.";
 }
+${"<"+"/script>"}<iframe name="soundDetectiveSubmitFrame" id="soundDetectiveSubmitFrame" title="Submission receiver" style="display:none"></iframe></body></html>`;
+ return learner;
+}
+$("exportGame").addEventListener("click",()=>{if(!state.truth.length){alert("Add at least one final segmentation answer-key segment before exporting.");return}if(!state.config.aSegUrl){alert("Add the final segmentation media URL before exporting.");return}const out=learnerHTML();download("sound-detective-final-assessment.html",out,"text/html;charset=utf-8");$("exportStatus").className="notice";$("exportStatus").textContent="Learner HTML exported successfully."});
+renderPractice();renderPracticeKeyEditor();renderQuestions();renderTruth();updateStats();syncConfig();
+})();
 </script>
-<script>
-  function onYouTubeIframeAPIReady(){
-    if(typeof setupYouTubePlayer === "function") setupYouTubePlayer();
-  }
-</script>
-<script src="https://www.youtube.com/iframe_api"></script>
-</body></html>
+</body>
+</html>
