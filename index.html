@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Sound Detective — Admin Builder</title>
+<style>
+:root{--bg:#0a1020;--panel:#121b30;--panel2:#18243d;--text:#edf3ff;--muted:#9eabc4;--line:#2b3a59;--accent:#70a7ff;--good:#45d39a;--bad:#ff7070;--warn:#f2bb55;--speech:#6ea8fe;--music:#b084ff;--event:#ff9f5b;--ambience:#4fd1c5;--artificial:#f06292}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#080d18,#111a2e);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{max-width:1220px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}.brand{display:flex;gap:11px;align-items:center}.logo{width:44px;height:44px;border-radius:13px;background:#213454;display:grid;place-items:center;font-size:22px}h1{font-size:21px;margin:0}h2{font-size:24px;margin:0 0 6px}h3{font-size:16px;margin:0 0 7px}.sub,.muted,.small{color:var(--muted);font-size:12px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:11px}.nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}.nav button,.btn{border:1px solid var(--line);background:#182640;color:var(--text);padding:10px 13px;border-radius:9px;cursor:pointer}.nav button.active,.btn.primary{background:var(--accent);color:#07101c;border-color:transparent;font-weight:700}.btn.good{background:rgba(69,211,154,.13);border-color:rgba(69,211,154,.4)}.btn.danger{background:rgba(255,112,112,.12);border-color:rgba(255,112,112,.4)}.btn:disabled{opacity:.45;cursor:not-allowed}.screen{display:none}.screen.active{display:block}.card{background:rgba(18,27,48,.96);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}input,select,textarea{width:100%;background:#0c1425;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:10px;outline:none}textarea{min-height:90px;resize:vertical}input:focus,select:focus,textarea:focus,button:focus{outline:2px solid rgba(112,167,255,.65);outline-offset:2px}.actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:14px}.notice{padding:12px;border:1px solid var(--line);background:#0e1729;border-radius:10px;font-size:12px;color:#cbd5e8}.table{width:100%;border-collapse:collapse;font-size:12px}.table th,.table td{border-bottom:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}.table th{color:var(--muted);font-weight:600}.mini{padding:10px;border:1px solid var(--line);border-radius:9px;background:#0e1729}.samplebar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:14px;padding:14px;border:1px solid rgba(112,167,255,.35);background:rgba(112,167,255,.07);border-radius:12px}.rowactions{display:flex;gap:5px}.tag{display:inline-block;padding:3px 6px;border-radius:999px;font-size:10px;background:#23314c}.timeline{position:relative;height:105px;background:#091120;border:1px solid var(--line);border-radius:12px;overflow:hidden;touch-action:none}.track{position:absolute;left:18px;right:18px;top:51px;height:4px;background:#34445f}.tick{position:absolute;top:43px;height:20px;width:1px;background:#63718a}.tick span{position:absolute;top:20px;transform:translateX(-50%);font-size:9px;color:#73819a}.seg{position:absolute;top:37px;height:28px;border-radius:6px;border:2px solid currentColor;padding:2px 6px;font-size:10px;font-weight:700;color:#07101c;overflow:hidden;white-space:nowrap;cursor:pointer}.speech{background:var(--speech)}.music{background:var(--music)}.event{background:var(--event)}.ambience{background:var(--ambience)}.artificial{background:var(--artificial)}.builderSeg{margin-top:10px}.qcard{border:1px solid var(--line);border-radius:12px;padding:12px;background:#0e1729;margin-top:9px}.qhead{display:flex;justify-content:space-between;gap:10px}.mcqopt{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.mcqopt label{display:flex;gap:7px;align-items:center;color:#cbd5e8;background:#121d33;border:1px solid var(--line);padding:9px;border-radius:8px}.mcqopt input{width:auto}.hidden{display:none!important}.success{color:var(--good)}.error{color:var(--bad)}.warn{color:var(--warn)}pre{white-space:pre-wrap;word-break:break-word;background:#080e1a;border:1px solid var(--line);padding:12px;border-radius:9px;font-size:11px;max-height:300px;overflow:auto}.footerNote{margin-top:15px;color:var(--muted);font-size:11px}@media(max-width:850px){.grid2,.grid3,.formgrid{grid-template-columns:1fr}.mcqopt{grid-template-columns:1fr}} 
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><div class="logo">🎧</div><div><h1>Sound Detective — Admin Builder</h1><div class="sub">Build, configure, and export a standalone skills-training assessment</div></div></div>
+  <span class="pill">ADMIN MODE</span>
+</header>
+
+<nav class="nav" aria-label="Admin sections">
+  <button class="active" data-screen="setup">1. Setup</button>
+  <button data-screen="practice">2. Practice Clips</button>
+  <button data-screen="questions">3. MCQ Bank</button>
+  <button data-screen="assessment">4. Final Assessment</button>
+  <button data-screen="data">5. Data & Sheets</button>
+  <button data-screen="export">6. Export</button>
+</nav>
+
+<section id="setup" class="screen active">
+  <div class="card">
+    <span class="pill">COURSE CONFIGURATION</span>
+    <h2 style="margin-top:9px">Set up the training experience</h2>
+    <div class="formgrid" style="margin-top:15px">
+      <div><label>Game / course title</label><input id="courseTitle" value="Sound Detective"></div>
+      <div><label>Subtitle</label><input id="courseSubtitle" value="Sound Annotation Skills Trainer"></div>
+      <div><label>Organization / team name</label><input id="orgName" placeholder="Optional"></div>
+      <div><label>One-attempt policy</label><select id="attemptPolicy"><option value="email">One attempt per email</option><option value="token">One attempt per unique access token</option><option value="off">Allow multiple attempts</option></select></div>
+    </div>
+    <div class="notice" style="margin-top:14px"><b>Important:</b> A true one-attempt lock cannot be guaranteed by a standalone HTML file alone. The exported game uses a Google Apps Script endpoint as the server-side source of truth. If the endpoint is not configured, the game can still run, but the one-attempt guarantee is disabled.</div>
+    <div class="samplebar">
+      <div>
+        <b>Need a starting point?</b>
+        <div class="small">Load a complete sample course configuration. It includes practice clips, MCQs, and a sample final answer key that you can replace with your own content.</div>
+      </div>
+      <div class="actions" style="margin-top:0">
+        <button class="btn good" id="loadSample" type="button">Load Sample Data</button>
+        <button class="btn danger" id="clearBuilder" type="button">Clear Builder</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Five sound categories</h3>
+    <div class="grid3">
+      <div class="mini"><b>Speech</b><br><span class="small">Person talking or singing where words can be made out.</span></div>
+      <div class="mini"><b>Music</b><br><span class="small">Music of any kind.</span></div>
+      <div class="mini"><b>Event</b><br><span class="small">Distinct sound from one identifiable source with a start and end.</span></div>
+      <div class="mini"><b>Ambience</b><br><span class="small">Continuous background/environmental sound.</span></div>
+      <div class="mini"><b>Artificial</b><br><span class="small">Synthetic/digitally created sound added to the scene.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="practice" class="screen">
+  <div class="card">
+    <span class="pill">GUIDED PRACTICE</span><h2 style="margin-top:9px">Practice clips</h2>
+    <p class="muted">Add clips learners will use before the final assessment. Use a direct media URL, a hosted MP4/WebM URL, or another browser-playable media source. The URL must permit browser playback.</p>
+    <div class="formgrid" style="margin-top:14px">
+      <div><label>Clip title</label><input id="pTitle" placeholder="e.g., Café scene"></div>
+      <div><label>Video/audio URL</label><input id="pUrl" placeholder="https://example.com/clip.mp4"></div>
+      <div><label>Skill focus</label><select id="pSkill"><option>Recognition</option><option>Classification</option><option>Segmentation</option><option>Complete annotation</option></select></div>
+      <div><label>Difficulty</label><select id="pDiff"><option>Introductory</option><option>Developing</option><option>Challenging</option></select></div>
+    </div>
+    <div class="actions"><button class="btn primary" id="addPractice">Add practice clip</button></div>
+  </div>
+  <div class="card"><h3>Configured practice clips</h3><div id="practiceList"></div></div>
+</section>
+
+<section id="questions" class="screen">
+  <div class="card">
+    <span class="pill">KNOWLEDGE CHECK</span><h2 style="margin-top:9px">Multiple-choice question bank</h2>
+    <p class="muted">Import a CSV or add questions manually. The CSV format is: <b>question,optionA,optionB,optionC,optionD,correct,explanation</b>. Correct can be A/B/C/D or the exact option text.</p>
+    <div class="formgrid" style="margin-top:14px">
+      <div><label>Import CSV</label><input id="csvFile" type="file" accept=".csv,text/csv"></div>
+      <div><label>Question</label><input id="qText" placeholder="What makes an Event different from Ambience?"></div>
+      <div><label>Option A</label><input id="qA"></div><div><label>Option B</label><input id="qB"></div>
+      <div><label>Option C</label><input id="qC"></div><div><label>Option D</label><input id="qD"></div>
+      <div><label>Correct answer</label><select id="qCorrect"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select></div>
+      <div><label>Explanation shown after answering</label><input id="qExplanation"></div>
+    </div>
+    <div class="actions"><button class="btn primary" id="addQuestion">Add question</button></div>
+  </div>
+  <div class="card"><h3>Question bank</h3><div id="questionList"></div></div>
+</section>
+
+<section id="assessment" class="screen">
+  <div class="card">
+    <span class="pill">FINAL ASSESSMENT BUILDER</span><h2 style="margin-top:9px">Configure the actual assessment</h2>
+    <p class="muted">Only this tab's responses are sent to the data endpoint. Practice activity is not submitted as an assessment record.</p>
+    <div class="formgrid" style="margin-top:14px">
+      <div><label>Assessment title</label><input id="aTitle" value="Final Sound Annotation Assessment"></div>
+      <div><label>MCQ count</label><input id="aCount" type="number" min="0" value="5"></div>
+      <div><label>Segmentation clip title</label><input id="aSegTitle" value="Final segmentation task"></div>
+      <div><label>Segmentation media URL</label><input id="aSegUrl" placeholder="https://example.com/final-clip.mp4"></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Final segmentation answer key</h3>
+    <p class="muted">Add every expected segment. Start/end values are in seconds. Only the final assessment uses these answers for scoring and data collection.</p>
+    <div class="formgrid" style="margin-top:12px">
+      <div><label>Start</label><input id="tStart" type="number" min="0" step=".01"></div>
+      <div><label>End</label><input id="tEnd" type="number" min="0" step=".01"></div>
+      <div><label>Category</label><select id="tCat"><option>Speech</option><option>Music</option><option>Event</option><option>Ambience</option><option>Artificial</option></select></div>
+      <div><label>Accepted label(s), comma-separated. Leave blank if no name required.</label><input id="tLabel" placeholder="door closing, door"></div>
+    </div>
+    <div class="actions"><button class="btn primary" id="addTruth">Add expected segment</button></div>
+    <div id="truthList" style="margin-top:12px"></div>
+  </div>
+  <div class="card">
+    <h3>Assessment rules</h3>
+    <div class="formgrid">
+      <div><label>Boundary tolerance (seconds)</label><input id="tolerance" type="number" min="0" step=".01" value=".25"></div>
+      <div><label>Required email?</label><select id="requireEmail"><option value="yes">Yes</option><option value="no">No</option></select></div>
+      <div><label>Show score to learner?</label><select id="showScore"><option value="yes">Yes</option><option value="no">No</option></select></div>
+      <div><label>Shuffle MCQs?</label><select id="shuffleQuestions"><option value="yes">Yes</option><option value="no">No</option></select></div>
+    </div>
+    <div class="notice" style="margin-top:12px">The final assessment will contain two components: (1) multiple-choice knowledge questions and (2) an actual interactive segmentation item. Name and email are collected only when the learner enters the final assessment.</div>
+  </div>
+</section>
+
+<section id="data" class="screen">
+  <div class="card">
+    <span class="pill">DATA COLLECTION</span><h2 style="margin-top:9px">Google Sheets connection</h2>
+    <p class="muted">Use a Google Apps Script Web App as the secure submission receiver. The exported game sends a JSON assessment record to the URL below.</p>
+    <div style="margin-top:14px"><label>Apps Script Web App URL</label><input id="endpoint" placeholder="https://script.google.com/macros/s/DEPLOYMENT_ID/exec"></div>
+    <div class="notice" style="margin-top:13px"><b>Recommended sheet columns:</b> timestamp, attemptId, name, email, assessmentVersion, mcqScore, mcqTotal, detectionScore, classificationScore, timingScore, namingScore, overallScore, submittedAt, answersJson, annotationsJson.</div>
+  </div>
+  <div class="card">
+    <h3>One-attempt protection</h3>
+    <p class="muted">The exported assessment first asks the endpoint whether the email/access token has already been used. The server must reject duplicate submissions. The browser also disables the assessment after a successful submission, but that browser lock is only a convenience layer.</p>
+    <div class="notice" style="margin-top:12px">For a stronger deployment, restrict the Apps Script Web App to the intended users/domain and use an access token or organization-issued identifier in addition to email.</div>
+  </div>
+  <div class="card">
+    <h3>Apps Script receiver template</h3>
+    <p class="muted">Copy this into a Google Apps Script project attached to your destination Google Sheet, set the sheet name, then deploy it as a Web App.</p>
+    <pre id="scriptPreview"></pre>
+    <div class="actions"><button class="btn" id="copyScript">Copy script</button></div>
+  </div>
+</section>
+
+<section id="export" class="screen">
+  <div class="card">
+    <span class="pill">PUBLISH</span><h2 style="margin-top:9px">Export the complete learner game</h2>
+    <p class="muted">This creates a standalone HTML file containing the configured course, practice clips, MCQ bank, final segmentation answer key, scoring rules, and Sheets endpoint.</p>
+    <div class="notice" style="margin-top:13px"><b>Before export:</b> verify that the final assessment has at least one segmentation answer key, the media URL is browser-playable, and the Apps Script endpoint is configured if you need server-side data collection and one-attempt enforcement.</div>
+    <div class="grid3" style="margin-top:14px">
+      <div class="mini"><b id="statPractice">0</b><br><span class="small">Practice clips</span></div>
+      <div class="mini"><b id="statQuestions">0</b><br><span class="small">MCQs</span></div>
+      <div class="mini"><b id="statTruth">0</b><br><span class="small">Final segments</span></div>
+    </div>
+    <div class="actions"><button class="btn primary" id="exportGame">Export learner HTML</button><button class="btn" id="downloadConfig">Export JSON config</button></div>
+    <div id="exportStatus" class="notice hidden" style="margin-top:12px"></div>
+  </div>
+  <div class="card"><h3>Deployment architecture</h3><div class="notice">
+    <b>Admin Builder HTML</b> → creates → <b>Learner HTML</b><br><br>
+    Learner completes Final Assessment → sends JSON → <b>Google Apps Script Web App</b> → writes to <b>Google Sheet</b> and rejects duplicate attempt IDs/emails according to the configured policy.
+  </div></div>
+</section>
+
+<script>
+(function(){
+"use strict";
+const state={
+  config:{title:"Sound Detective",subtitle:"Sound Annotation Skills Trainer",org:"",attemptPolicy:"email",endpoint:"",aTitle:"Final Sound Annotation Assessment",aCount:5,aSegTitle:"Final segmentation task",aSegUrl:"",tolerance:.25,requireEmail:"yes",showScore:"yes",shuffleQuestions:"yes"},
+  practice:[],
+  questions:[],
+  truth:[]
+};
+const SAMPLE_MEDIA_URL = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
+
+function loadSampleData(){
+  const ok = state.practice.length || state.questions.length || state.truth.length;
+  if(ok && !confirm("Loading the sample will replace the current builder content. Continue?")) return;
+
+  state.config = {
+    title:"Sound Detective — Sample Course",
+    subtitle:"Sound Annotation Skills Trainer",
+    org:"Sample Training Team",
+    attemptPolicy:"email",
+    endpoint:"",
+    aTitle:"Final Assessment — Sample",
+    aCount:5,
+    aSegTitle:"Sample final segmentation task — REPLACE MEDIA + ANSWER KEY",
+    aSegUrl:SAMPLE_MEDIA_URL,
+    tolerance:.25,
+    requireEmail:"yes",
+    showScore:"yes",
+    shuffleQuestions:"yes"
+  };
+
+  state.practice = [
+    {id:"sample_p1",title:"Sample Clip 1 — Event vs Ambience",url:SAMPLE_MEDIA_URL,skill:"Classification",difficulty:"Beginner"},
+    {id:"sample_p2",title:"Sample Clip 2 — Find the Sound",url:SAMPLE_MEDIA_URL,skill:"Detection",difficulty:"Intermediate"},
+    {id:"sample_p3",title:"Sample Clip 3 — Timeline Boundaries",url:SAMPLE_MEDIA_URL,skill:"Segmentation",difficulty:"Advanced"}
+  ];
+
+  state.questions = [
+    {id:"sample_q1",question:"Which category describes a continuous background sound with no single identifiable source or moment?",options:["Speech","Music","Event","Ambience"],correct:"D",explanation:"Ambience covers continuous environmental or background sound."},
+    {id:"sample_q2",question:"A person says a clearly understandable sentence. Which category should be used?",options:["Speech","Music","Event","Artificial"],correct:"A",explanation:"Use Speech when words can be made out."},
+    {id:"sample_q3",question:"A door closes at 00:04 and ends at 00:05. What makes this an Event?",options:["It is continuous background sound.","It is traceable to one source with a start and end.","It contains understandable words.","It must be synthetic."],correct:"B",explanation:"An Event is tied to an identifiable source and has a discernible start/end."},
+    {id:"sample_q4",question:"Which category fits an obviously synthesized beep added to a recording?",options:["Ambience","Speech","Artificial","Music"],correct:"C",explanation:"Artificial is for sounds that were made or added rather than naturally recorded."},
+    {id:"sample_q5",question:"When placing a segment on the timeline, what should the annotator prioritize?",options:["A convenient rounded timestamp","The middle of the sound only","The actual audible start and end","A fixed 5-second duration"],correct:"C",explanation:"Segments should follow the audible boundaries as precisely as the task allows."}
+  ];
+
+  // Illustrative answer key only. The media URL above is a generic public demo clip,
+  // so admins MUST replace both the media and these answer-key segments.
+  state.truth = [
+    {start:0.80,end:1.65,category:"Ambience",labels:["room ambience","background ambience"]},
+    {start:2.10,end:2.75,category:"Event",labels:["footstep","footsteps"]},
+    {start:3.05,end:3.80,category:"Speech",labels:[]},
+    {start:4.15,end:4.95,category:"Music",labels:["music","background music"]},
+    {start:5.20,end:5.55,category:"Artificial",labels:["beep","tone","synthetic beep"]}
+  ];
+
+  syncConfig();
+  $("courseTitle").value=state.config.title;
+  $("courseSubtitle").value=state.config.subtitle;
+  $("orgName").value=state.config.org;
+  $("attemptPolicy").value=state.config.attemptPolicy;
+  $("endpoint").value=state.config.endpoint;
+  $("aTitle").value=state.config.aTitle;
+  $("aCount").value=state.config.aCount;
+  $("aSegTitle").value=state.config.aSegTitle;
+  $("aSegUrl").value=state.config.aSegUrl;
+  $("tolerance").value=state.config.tolerance;
+  $("requireEmail").value=state.config.requireEmail;
+  $("showScore").value=state.config.showScore;
+  $("shuffleQuestions").value=state.config.shuffleQuestions;
+
+  renderPractice();
+  renderQuestions();
+  renderTruth();
+  updateStats();
+  alert("Sample data loaded. Review every sample item, replace the media URLs, and replace the final answer key before exporting.");
+}
+
+function clearBuilder(){
+  if(!confirm("Clear all practice clips, MCQs, and final answer-key segments?")) return;
+  state.practice=[];
+  state.questions=[];
+  state.truth=[];
+  renderPractice();
+  renderQuestions();
+  renderTruth();
+  updateStats();
+}
+
+const $=id=>document.getElementById(id);
+const categories=["Speech","Music","Event","Ambience","Artificial"];
+const requiredName=["Music","Event","Ambience"];
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+function nav(screen){document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===screen));document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.screen===screen));if(screen==="export")updateStats()}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>nav(b.dataset.screen)));
+
+function syncConfig(){
+ state.config.title=$("courseTitle").value.trim()||"Sound Detective";
+ state.config.subtitle=$("courseSubtitle").value.trim();
+ state.config.org=$("orgName").value.trim();
+ state.config.attemptPolicy=$("attemptPolicy").value;
+ state.config.endpoint=$("endpoint").value.trim();
+ state.config.aTitle=$("aTitle").value.trim();
+ state.config.aCount=Math.max(0,parseInt($("aCount").value)||0);
+ state.config.aSegTitle=$("aSegTitle").value.trim();
+ state.config.aSegUrl=$("aSegUrl").value.trim();
+ state.config.tolerance=Math.max(0,parseFloat($("tolerance").value)||0);
+ state.config.requireEmail=$("requireEmail").value;
+ state.config.showScore=$("showScore").value;
+ state.config.shuffleQuestions=$("shuffleQuestions").value;
+}
+["courseTitle","courseSubtitle","orgName","attemptPolicy","endpoint","aTitle","aCount","aSegTitle","aSegUrl","tolerance","requireEmail","showScore","shuffleQuestions"].forEach(id=>$(id).addEventListener("input",syncConfig));
+["attemptPolicy","requireEmail","showScore","shuffleQuestions"].forEach(id=>$(id).addEventListener("change",syncConfig));
+$("loadSample").addEventListener("click",loadSampleData);
+$("clearBuilder").addEventListener("click",clearBuilder);
+
+$("addPractice").addEventListener("click",()=>{
+ const title=$("pTitle").value.trim(),url=$("pUrl").value.trim();
+ if(!title||!url){alert("Enter a clip title and media URL.");return}
+ state.practice.push({id:"p_"+Date.now(),title,url,skill:$("pSkill").value,difficulty:$("pDiff").value});
+ $("pTitle").value="";$("pUrl").value="";renderPractice();
+});
+function renderPractice(){
+ $("practiceList").innerHTML=state.practice.length?'<table class="table"><tr><th>Title</th><th>URL</th><th>Skill</th><th>Difficulty</th><th></th></tr>'+state.practice.map((x,i)=>`<tr><td>${esc(x.title)}</td><td>${esc(x.url)}</td><td>${esc(x.skill)}</td><td>${esc(x.difficulty)}</td><td><button class="btn danger" data-delp="${i}" type="button">Delete</button></td></tr>`).join("")+"</table>":'<div class="muted">No practice clips yet.</div>';
+ document.querySelectorAll("[data-delp]").forEach(b=>b.addEventListener("click",()=>{state.practice.splice(+b.dataset.delp,1);renderPractice()}));
+}
+
+function parseCSV(text){
+ const rows=[];let row=[],cell="",quote=false;
+ for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];
+  if(c==='"'&&quote&&n==='"'){cell+='"';i++;continue}
+  if(c==='"'){quote=!quote;continue}
+  if(c===','&&!quote){row.push(cell);cell="";continue}
+  if((c==="\n"||c==="\r")&&!quote){if(c==="\r"&&n==="\n")i++;row.push(cell);if(row.some(v=>v.trim()!==""))rows.push(row);row=[];cell="";continue}
+  cell+=c;
+ }
+ if(cell!==""||row.length){row.push(cell);if(row.some(v=>v.trim()!==""))rows.push(row)}
+ return rows;
+}
+$("csvFile").addEventListener("change",e=>{
+ const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{const rows=parseCSV(r.result);const start=(rows[0]||[]).map(x=>x.toLowerCase().trim()).includes("question")?1:0;
+ rows.slice(start).forEach(x=>{if(x.length>=6)state.questions.push({id:"q_"+Date.now()+"_"+Math.random(),question:x[0],options:[x[1],x[2],x[3],x[4]],correct:normalizeCorrect(x[5],[x[1],x[2],x[3],x[4]]),explanation:x[6]||""})});renderQuestions();alert((rows.length-start)+" question row(s) imported.")};r.readAsText(f);
+});
+function normalizeCorrect(v,opts){const s=String(v).trim();if(/^[ABCD]$/i.test(s))return s.toUpperCase();const idx=opts.findIndex(x=>x.trim().toLowerCase()===s.toLowerCase());return idx>=0?"ABCD"[idx]:"A"}
+$("addQuestion").addEventListener("click",()=>{
+ const q=$("qText").value.trim(),opts=[$("qA").value.trim(),$("qB").value.trim(),$("qC").value.trim(),$("qD").value.trim()];
+ if(!q||opts.some(x=>!x)){alert("Enter the question and all four options.");return}
+ state.questions.push({id:"q_"+Date.now(),question:q,options:opts,correct:$("qCorrect").value,explanation:$("qExplanation").value.trim()});
+ ["qText","qA","qB","qC","qD","qExplanation"].forEach(id=>$(id).value="");renderQuestions();
+});
+function renderQuestions(){
+ $("questionList").innerHTML=state.questions.length?state.questions.map((q,i)=>`<div class="qcard"><div class="qhead"><b>${i+1}. ${esc(q.question)}</b><button class="btn danger" data-delq="${i}" type="button">Delete</button></div><div class="small">A. ${esc(q.options[0])} &nbsp; B. ${esc(q.options[1])} &nbsp; C. ${esc(q.options[2])} &nbsp; D. ${esc(q.options[3])}</div><div class="small" style="margin-top:4px">Correct: ${esc(q.correct)} ${q.explanation?" • "+esc(q.explanation):""}</div></div>`).join(""):'<div class="muted">No questions configured.</div>';
+ document.querySelectorAll("[data-delq]").forEach(b=>b.addEventListener("click",()=>{state.questions.splice(+b.dataset.delq,1);renderQuestions()}));
+}
+
+$("addTruth").addEventListener("click",()=>{
+ let s=parseFloat($("tStart").value),e=parseFloat($("tEnd").value);if(!Number.isFinite(s)||!Number.isFinite(e)||e<=s){alert("Enter valid start/end times.");return}
+ const c=$("tCat").value,l=$("tLabel").value.split(",").map(x=>x.trim()).filter(Boolean);
+ if(requiredName.includes(c)&&!l.length){alert("Music, Event, and Ambience require at least one accepted label.");return}
+ state.truth.push({start:s,end:e,category:c,labels:l});state.truth.sort((a,b)=>a.start-b.start);$("tStart").value="";$("tEnd").value="";$("tLabel").value="";renderTruth();
+});
+function renderTruth(){
+ $("truthList").innerHTML=state.truth.length?'<table class="table"><tr><th>Start</th><th>End</th><th>Category</th><th>Accepted labels</th><th></th></tr>'+state.truth.map((x,i)=>`<tr><td>${x.start.toFixed(2)}s</td><td>${x.end.toFixed(2)}s</td><td><span class="tag">${esc(x.category)}</span></td><td>${esc(x.labels.join(", ")||"Not required")}</td><td><button class="btn danger" data-delt="${i}" type="button">Delete</button></td></tr>`).join("")+"</table>":'<div class="muted">No final answer-key segments configured.</div>';
+ document.querySelectorAll("[data-delt]").forEach(b=>b.addEventListener("click",()=>{state.truth.splice(+b.dataset.delt,1);renderTruth()}));
+}
+const appsScript=`const SHEET_NAME = "Responses";
+const LOCK = LockService.getScriptLock();
+
+function doPost(e) {
+  try {
+    const data = JSON.parse(e.postData.contents || "{}");
+    const action = String(data.action || "");
+    if (action !== "check" && action !== "submit") return json({ok:false,error:"Invalid action"});
+
+    LOCK.waitLock(10000);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["timestamp","attemptId","name","email","assessmentVersion","mcqScore","mcqTotal","detectionScore","classificationScore","timingScore","namingScore","overallScore","submittedAt","answersJson","annotationsJson"]);
+    }
+
+    const values = sheet.getDataRange().getValues();
+    const attemptId = String(data.attemptId || "");
+    const email = String(data.email || "").trim().toLowerCase();
+    const policy = String(data.attemptPolicy || "email");
+
+    // Server-side one-attempt check. The final submit repeats this check while holding
+    // the script lock, so two simultaneous submissions cannot both be accepted.
+    const isDuplicate = () => {
+      if (policy === "off") return false;
+      for (let i = 1; i < values.length; i++) {
+        const oldAttempt = String(values[i][1] || "");
+        const oldEmail = String(values[i][3] || "").trim().toLowerCase();
+        if (policy === "token" && attemptId && oldAttempt === attemptId) return true;
+        if (policy === "email" && email && oldEmail === email) return true;
+      }
+      return false;
+    };
+
+    if (isDuplicate()) {
+      return json({ok:false,duplicate:true,error:"An assessment response already exists for this identity."});
+    }
+
+    if (action === "check") return json({ok:true,duplicate:false});
+
+    sheet.appendRow([
+      new Date(), attemptId, data.name || "", email, data.assessmentVersion || "",
+      data.mcqScore || 0, data.mcqTotal || 0,
+      data.detectionScore || 0, data.classificationScore || 0,
+      data.timingScore || 0, data.namingScore || 0, data.overallScore || 0,
+      data.submittedAt || "", JSON.stringify(data.answers || []),
+      JSON.stringify(data.annotations || [])
+    ]);
+
+    return json({ok:true});
+  } catch(err) {
+    return json({ok:false,error:String(err)});
+  } finally {
+    try { LOCK.releaseLock(); } catch (_) {}
+  }
+}
+
+function json(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
+$("scriptPreview").textContent=appsScript;
+$("copyScript").addEventListener("click",async()=>{try{await navigator.clipboard.writeText(appsScript);alert("Apps Script copied.")}catch(e){alert("Copy is unavailable in this browser. Select and copy the script manually.")}});
+
+function updateStats(){syncConfig();$("statPractice").textContent=state.practice.length;$("statQuestions").textContent=state.questions.length;$("statTruth").textContent=state.truth.length}
+function download(filename,text,mime="text/plain"){const blob=new Blob([text],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+$("downloadConfig").addEventListener("click",()=>{syncConfig();download("sound-detective-config.json",JSON.stringify(state,null,2),"application/json")});
+
+function learnerHTML(){
+ syncConfig();
+ const cfg=JSON.parse(JSON.stringify(state));
+ const learner=String.raw`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>${esc(cfg.config.title)}</title>
+<style>
+:root{--bg:#070c17;--panel:#111a2d;--panel2:#17233a;--panel3:#0b1323;--text:#eef4ff;--muted:#95a3bd;--line:#293957;--accent:#70a7ff;--good:#45d39a;--bad:#ff667a;--warn:#f4c15d;--speech:#6ea8fe;--music:#a978ff;--event:#ffab12;--ambience:#4fd1c5;--artificial:#d98cff}
+*{box-sizing:border-box}body{margin:0;background:#050913;color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{max-width:1080px;margin:auto;padding:18px 8px 40px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.brand{display:flex;gap:10px;align-items:center}.logo{width:42px;height:42px;border-radius:12px;background:#172844;display:grid;place-items:center;font-size:21px}h1{font-size:20px;margin:0}h2{margin:0 0 7px;font-size:24px}.sub,.muted,.small{color:var(--muted);font-size:12px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:10px;color:var(--muted)}.card{background:rgba(17,26,45,.97);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}.screen{display:none}.screen.active{display:block}.progress{height:5px;background:#202c44;border-radius:10px;overflow:hidden;margin:10px 0 16px}.progress>i{display:block;height:100%;background:var(--accent);width:0}.btn{border:1px solid var(--line);background:#16243d;color:var(--text);padding:9px 13px;border-radius:9px;cursor:pointer}.primary{background:var(--accent);color:#07101c;border-color:transparent;font-weight:700}.actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.cat{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:11px;min-height:120px}.cat b{display:block;margin-bottom:5px}.cat span{color:var(--muted);font-size:11px}.q{font-size:16px;line-height:1.5;margin:12px 0}.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}.opt{border:1px solid var(--line);background:#101a2e;color:var(--text);padding:12px;border-radius:9px;text-align:left}.opt.sel{border-color:var(--accent);background:#182d4e}.feedback{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:10px}.good{border-color:rgba(69,211,154,.4);background:rgba(69,211,154,.07)}.bad{border-color:rgba(255,102,122,.4);background:rgba(255,102,122,.07)}input,select{width:100%;background:#080f1e;border:1px solid var(--line);color:var(--text);border-radius:7px;padding:9px}label{font-size:10px;color:var(--muted);display:block;margin-bottom:5px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.media-shell{background:#03060b;border:1px solid #26344f;border-radius:12px;overflow:hidden}.media{display:block;width:100%;height:auto;max-height:360px;min-height:250px;object-fit:cover;background:#03060b;border:0}.youtube{width:100%;aspect-ratio:16/9;border:0;display:block}.media-tools{height:34px;padding:8px 12px;color:#8fa2c0;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.3px;border-top:1px solid #1d2b44}.timeline-card{background:#101a2d;border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:10px}.transport{display:flex;align-items:center;justify-content:space-between;gap:10px}.play{background:#00b778;color:#04130e;border:0;border-radius:7px;padding:8px 13px;font-weight:800;cursor:pointer}.speed{font-size:10px;color:#8494ae;border:1px solid var(--line);border-radius:7px;padding:6px 8px}.speed button{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:10px}.speed button.active{color:#00e09a;background:#0c2d27;border-radius:4px}.readout{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;background:#07101f;border:1px solid var(--line);border-radius:7px;padding:7px 10px;color:#00e09a}.timeline{position:relative;height:232px;background:#07101c;border:1px solid #273754;border-radius:9px;overflow:hidden;touch-action:none;margin-top:10px}.lane-area{position:absolute;left:92px;right:0;top:0;bottom:27px;overflow:hidden}.lane{position:relative;height:41px;border-bottom:1px solid #1d2a40;box-sizing:border-box}.lane:nth-child(even){background:rgba(255,255,255,.015)}.lane-labels{position:absolute;left:0;top:0;bottom:27px;width:92px;background:#091321;border-right:1px solid #273754;z-index:5}.lane-label{height:41px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:800;box-sizing:border-box;border-bottom:1px solid #1d2a40}.lane-label span{display:inline-flex;align-items:center;gap:5px}.lane-label i{width:7px;height:7px;border-radius:50%;display:inline-block}.lane-label[data-cat="Speech"]{color:var(--speech)}.lane-label[data-cat="Music"]{color:var(--music)}.lane-label[data-cat="Event"]{color:var(--event)}.lane-label[data-cat="Ambience"]{color:var(--ambience)}.lane-label[data-cat="Artificial"]{color:var(--artificial)}.timeline .tick{position:absolute;top:0;bottom:0;width:1px;background:#34435c;z-index:1}.timeline .tick span{position:absolute;top:207px;transform:translateX(-50%);font-size:9px;color:#7f8ea7}.timeline .minor{position:absolute;top:0;bottom:0;width:1px;background:#202e45;z-index:0}.cursor{position:absolute;top:0;bottom:27px;width:2px;background:#0ff0bd;z-index:7;box-shadow:0 0 7px rgba(0,240,189,.45)}.cursor:before{content:"";position:absolute;left:-4px;top:-3px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #0ff0bd}.seg{position:absolute;height:31px;border:2px solid currentColor;border-radius:6px;padding:4px 6px;color:#07101c;font-size:10px;font-weight:800;overflow:hidden;white-space:nowrap;cursor:pointer;z-index:6;box-shadow:0 2px 5px rgba(0,0,0,.2);box-sizing:border-box}.seg.draft{opacity:.65;border-style:dashed;pointer-events:none}.seg.selected{outline:2px solid #fff;outline-offset:1px}.speech{background:var(--speech)}.music{background:var(--music)}.event{background:var(--event)}.ambience{background:var(--ambience)}.artificial{background:var(--artificial)}.timeline-hint{display:flex;justify-content:space-between;color:#7f8ea7;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;margin-top:7px}.segment-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 10px;background:#050b15;border:1px solid #22304a;border-radius:8px;font-size:11px}.toolbar-time{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#9cabc2}.tiny-control{background:#101b30;border:1px solid var(--line);color:#dbe5f5;border-radius:6px;padding:5px 9px;cursor:pointer}.tiny-danger{color:#ff7d8d;border-color:#743144;background:#200d17}.annotation-panel{margin-top:10px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#111b2e}.annotation-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:13px}.annotation-title{font-size:13px;font-weight:700}.annotation-time{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:#00e0a1;background:#061d1a;border-radius:4px;padding:4px 7px}.category-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.category-btn{min-height:60px;border:1px solid var(--line);background:#080f1d;color:#dce6f7;border-radius:8px;cursor:pointer;text-align:center;padding:8px 4px;font-size:11px}.category-btn .icon{display:block;font-size:14px;margin-bottom:2px}.category-btn.selected{border-color:#fff;box-shadow:inset 0 0 0 1px currentColor}.category-btn[data-cat="Speech"].selected{background:rgba(110,168,254,.18);color:var(--speech)}.category-btn[data-cat="Music"].selected{background:rgba(169,120,255,.18);color:var(--music)}.category-btn[data-cat="Event"].selected{background:rgba(255,171,18,.18);color:var(--event)}.category-btn[data-cat="Ambience"].selected{background:rgba(79,209,197,.18);color:var(--ambience)}.category-btn[data-cat="Artificial"].selected{background:rgba(217,140,255,.18);color:var(--artificial)}.annotation-rule{font-size:10px;color:#a4b0c4;margin-top:7px}.name-wrap{margin-top:12px}.name-rule{font-size:10px;color:var(--warn);margin-top:5px}.expected{margin-top:12px;padding:10px;border-radius:8px;background:#061a18;border:1px solid rgba(69,211,154,.28);color:#5de7bb;font-size:11px}.rows{margin-top:9px;display:grid;gap:6px}.row{display:grid;grid-template-columns:72px 72px 1fr 34px;gap:7px;align-items:center;padding:7px 9px;background:#0a1221;border:1px solid var(--line);border-radius:7px;font-size:10px}.row button{background:none;border:0;color:#ff7d8d;font-size:16px;cursor:pointer}.notice{padding:12px;background:#0e1729;border:1px solid var(--line);border-radius:10px;font-size:12px;color:#cbd5e8}.hidden{display:none!important}.score{font-size:32px;font-weight:800}.metric{padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.opts,.formgrid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.category-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:480px){.grid{grid-template-columns:1fr}.category-grid{grid-template-columns:1fr 1fr}.transport{flex-wrap:wrap}.readout{order:3;width:100%;text-align:center}}
+
+</style></head><body><div class="app">
+<header class="top"><div class="brand"><div class="logo">🎧</div><div><h1>${esc(cfg.config.title)}</h1><div class="sub">${esc(cfg.config.subtitle)}</div></div></div><span class="pill">LEARNER MODE</span></header>
+
+<section id="intro" class="screen active"><div class="card"><span class="pill">WELCOME</span><h2 style="margin-top:9px">Train your sound annotation skills</h2><p class="muted">You will learn the five sound categories, practice classification, practice timeline precision, and then complete a final assessment containing knowledge questions and an actual segmentation task.</p><div class="grid" style="margin-top:16px"><div class="cat"><b>🗣 Speech</b><span>Talking or singing where words can be made out.</span></div><div class="cat"><b>🎵 Music</b><span>Music of any kind.</span></div><div class="cat"><b>🔊 Event</b><span>Distinct sound from one identifiable source.</span></div><div class="cat"><b>🌧 Ambience</b><span>Continuous environmental/background sound.</span></div><div class="cat"><b>◇ Artificial</b><span>Synthetic or digitally created sound.</span></div></div><div class="actions"><button class="btn primary" id="begin">Begin training →</button></div></div></section>
+
+<section id="practice" class="screen"><div class="card"><span class="pill">PRACTICE</span><h2 style="margin-top:9px">Guided practice</h2><div id="practiceContent"></div><div class="actions"><button class="btn" id="practiceBack">← Back</button><button class="btn primary" id="practiceNext">Next →</button></div></div></section>
+
+<section id="final" class="screen"><div class="card"><span class="pill">FINAL ASSESSMENT</span><h2 style="margin-top:9px">${esc(cfg.config.aTitle)}</h2><p class="muted">This is the only stage that records an assessment submission.</p><div id="identity" class="card" style="padding:14px;margin-top:14px;background:#0e1729"><div class="formgrid"><div><label>Name</label><input id="name" autocomplete="name"></div><div><label>Email</label><input id="email" type="email" autocomplete="email"></div></div><div class="actions"><button class="btn primary" id="startFinal">Start final assessment</button></div><div id="identityMsg" class="feedback hidden"></div></div><div id="assessmentBody" class="hidden"></div></div></section>
+
+<section id="result" class="screen"><div class="card"><span class="pill">ASSESSMENT COMPLETE</span><h2 style="margin-top:9px">Your assessment has been submitted</h2><p class="muted" id="resultIntro"></p><div id="resultMetrics" class="metrics" style="margin-top:16px"></div><div class="notice" style="margin-top:14px" id="resultNote"></div></div></section>
+</div>
+${"<script>"}
+const DATA=${JSON.stringify(cfg)};
+const $=id=>document.getElementById(id);
+const reqName=["Music","Event","Ambience"];
+let practiceIndex=0,answers=[],annotations=[],finalStarted=false,submitted=false,attemptId=(globalThis.crypto&&globalThis.crypto.randomUUID)?globalThis.crypto.randomUUID():"att_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));scrollTo({top:0,behavior:"smooth"})}
+function fmt(x){return Number(x).toFixed(2)}
+function mediaHTML(url){
+ if(!url)return '<div class="notice">No media URL configured for this activity.</div>';
+ const u=String(url); const safe=u.replace(/"/g,"&quot;");
+ const yt=u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+ if(yt)return '<div class="media-shell"><iframe class="youtube" src="https://www.youtube.com/embed/'+yt[1]+'?rel=0" title="Training video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><div class="media-tools">◉ SPECTRUM MONITOR <span style="float:right">Use the timeline below to place and edit segments</span></div></div>';
+ return '<div class="media-shell"><video id="taskMedia" class="media" controls preload="metadata" src="'+safe+'"></video><div class="media-tools">◉ SPECTRUM MONITOR <span style="float:right">Playback follows the annotation timeline</span></div></div>';
+}
+function renderPractice(){
+ const arr=DATA.practice;if(!arr.length){$("practiceContent").innerHTML='<div class="notice">No practice clips were configured. Continue to the final assessment when ready.</div>';return}
+ const x=arr[practiceIndex];
+ $("practiceContent").innerHTML='<div class="notice"><b>'+esc(x.title)+'</b><br>'+esc(x.skill)+' • '+esc(x.difficulty)+'</div>'+mediaHTML(x.url)+'<div class="notice" style="margin-top:10px">Listen carefully. This practice clip is not submitted to the assessment data endpoint.</div>';
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+$("begin").onclick=()=>{show("practice");renderPractice()};
+$("practiceBack").onclick=()=>show("intro");
+$("practiceNext").onclick=()=>{if(practiceIndex<DATA.practice.length-1){practiceIndex++;renderPractice()}else show("final")};
+
+$("startFinal").onclick=async()=>{
+ const name=$("name").value.trim(),email=$("email").value.trim();
+ if(!name){$("identityMsg").className="feedback bad";$("identityMsg").textContent="Please enter your name.";return}
+ if(DATA.config.requireEmail==="yes"&&(!email||!email.includes("@"))){$("identityMsg").className="feedback bad";$("identityMsg").textContent="Please enter a valid email address.";return}
+ if(DATA.config.endpoint){
+   try{const r=await fetch(DATA.config.endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"check",attemptId,email})});const j=await r.json();if(j.duplicate){$("identityMsg").className="feedback bad";$("identityMsg").textContent="This assessment has already been submitted for this identity.";return}}catch(e){$("identityMsg").className="feedback bad";$("identityMsg").textContent="The assessment server could not be reached. Please contact the administrator.";return}
+ }
+ finalStarted=true;answers=[];annotations=[];$("identity").classList.add("hidden");buildAssessment();
+};
+
+function buildAssessment(){
+ const body=$("assessmentBody");body.classList.remove("hidden");
+ let qs=DATA.questions.slice(0,DATA.config.aCount);if(DATA.config.shuffleQuestions==="yes")qs.sort(()=>Math.random()-.5);
+ let h='<div class="card" style="padding:14px;background:#0e1729"><b>Part 1 — Knowledge check</b><div id="qs">';
+ qs.forEach((q,i)=>{h+='<div class="qcard" data-q="'+i+'"><div class="q">'+(i+1)+'. '+esc(q.question)+'</div><div class="opts">'+q.options.map((o,j)=>'<button type="button" class="opt" data-q="'+i+'" data-a="'+"ABCD"[j]+'">'+"ABCD"[j]+'. '+esc(o)+'</button>').join("")+'</div><div class="feedback hidden" id="qfb'+i+'"></div></div>'});
+ h+='</div></div>';
+ h+='<div class="card" style="padding:14px;background:#0e1729"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>Part 2 — Actual segmentation task</b><p class="muted" style="margin:4px 0 0">Listen to the clip, mark each required sound, choose the category, and name Music, Event, and Ambience.</p></div><span class="pill">TIMELINE ANNOTATION</span></div>';
+ h+=mediaHTML(DATA.config.aSegUrl);
+ h+='<div class="timeline-card"><div class="transport"><div style="display:flex;gap:7px;align-items:center"><button type="button" class="play" id="playBtn">▶ PLAY</button><div class="speed"><span>RATE:</span> <button type="button" data-rate="0.5">0.5x</button> <button type="button" data-rate="1" class="active">1x</button> <button type="button" data-rate="1.5">1.5x</button></div></div><div class="readout">PLAYHEAD: <span id="playhead">00:00.000</span> <span style="color:#66758d">/ <span id="durationReadout">00:00.000</span></span></div><button type="button" class="btn" id="newSeg">＋ Add Segment</button></div><div class="timeline" id="tl"><div class="lane-labels"><div class="lane-label" data-cat="Speech"><span><i></i>Speech</span></div><div class="lane-label" data-cat="Music"><span><i></i>Music</span></div><div class="lane-label" data-cat="Event"><span><i></i>Event</span></div><div class="lane-label" data-cat="Ambience"><span><i></i>Ambience</span></div><div class="lane-label" data-cat="Artificial"><span><i></i>Artificial</span></div></div><div class="lane-area" id="laneArea"><div class="lane" data-cat="Speech"></div><div class="lane" data-cat="Music"></div><div class="lane" data-cat="Event"></div><div class="lane" data-cat="Ambience"></div><div class="lane" data-cat="Artificial"></div><div id="ticks"></div><div id="segroot"></div><div id="cursor" class="cursor"></div></div></div><div class="timeline-hint"><span>Tip: click &amp; drag on timeline to create segment · click segment to edit</span><span id="segCount">0 segments placed</span></div><div id="selectedBar" class="segment-toolbar hidden"></div></div>';
+ h+='<div id="annotationPanel" class="annotation-panel hidden"></div><div class="expected">✣ Expected layer marked: Double-check your sound name and boundary precision before submitting.</div><div class="rows" id="rows"></div></div><div class="actions"><button class="btn primary" id="submit">Submit for Review</button></div><div id="submitMsg" class="feedback hidden"></div>';
+ body.innerHTML=h;makeTicks();bindAssessment();initMediaSync();
+}
+function durationSec(){const m=$("taskMedia");return m&&Number.isFinite(m.duration)&&m.duration>0?m.duration:15}
+function timeText(sec){sec=Math.max(0,Number(sec)||0);const m=Math.floor(sec/60),s=sec-m*60;return String(m).padStart(2,"0")+":"+s.toFixed(3).padStart(6,"0")}
+function makeTicks(){const d=durationSec(),area=$("laneArea");if(!area)return;const ticks=$("ticks");ticks.innerHTML="";const major=Math.max(1,Math.ceil(d/8));for(let t=0;t<=d+0.001;t+=major){const x=t/d*100;const el=document.createElement("div");el.className="tick";el.style.left=x+"%";el.innerHTML="<span>"+timeText(t).replace(/^00:/,"")+"</span>";ticks.appendChild(el)}for(let t=0;t<=d;t+=Math.max(.5,major/2)){const el=document.createElement("div");el.className="minor";el.style.left=(t/d*100)+"%";ticks.appendChild(el)}}
+function initMediaSync(){
+ const m=$("taskMedia"),tl=$("tl"),area=$("laneArea");
+ if(m){m.addEventListener("loadedmetadata",()=>{makeTicks();$("durationReadout").textContent=timeText(m.duration);updateCursor(0)});m.addEventListener("timeupdate",()=>updateCursor(m.currentTime));m.addEventListener("play",()=>$ ("playBtn").textContent="❚❚ PAUSE");m.addEventListener("pause",()=>$ ("playBtn").textContent="▶ PLAY");$("playBtn").onclick=()=>m.paused?m.play():m.pause();document.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{m.playbackRate=+b.dataset.rate;document.querySelectorAll("[data-rate]").forEach(x=>x.classList.toggle("active",x===b))});}
+ else {$("durationReadout").textContent=timeText(durationSec());$("playBtn").onclick=()=>alert("For a YouTube clip, use the embedded player controls. Timeline placement remains fully interactive below.")}
+ if(!area)return;
+ area.addEventListener("pointerdown",e=>{
+   if(e.target.closest(".seg"))return;
+   const lane=e.target.closest(".lane"); if(!lane)return;
+   const r=area.getBoundingClientRect(),d=durationSec();
+   const clamp=v=>Math.max(0,Math.min(d,v));
+   const start=clamp((e.clientX-r.left)/r.width*d); let current=start; let dragging=true;
+   const draft=document.createElement("div");draft.className="seg draft "+lane.dataset.cat.toLowerCase();draft.style.left=(start/d*100)+"%";draft.style.width="0.5%";draft.style.top=(Array.from(area.querySelectorAll(".lane")).indexOf(lane)*41+5)+"px";draft.textContent=lane.dataset.cat;area.appendChild(draft);
+   const move=ev=>{if(!dragging)return;current=clamp((ev.clientX-r.left)/r.width*d);const st=Math.min(start,current),en=Math.max(start,current);draft.style.left=(st/d*100)+"%";draft.style.width=Math.max(.5,(en-st)/d*100)+"%"};
+   const up=()=>{dragging=false;window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);draft.remove();const st=Math.min(start,current),en=Math.max(start,current);openAnnotation({start:st,end:Math.max(st+.05,en),category:lane.dataset.cat,label:"",index:-1});};
+   window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);move(e);
+ });
+}
+let selectedIndex=-1;
+function updateCursor(t){const d=durationSec();if($("cursor"))$("cursor").style.left=Math.max(0,Math.min(100,t/d*100))+"%";if($("playhead"))$("playhead").textContent=timeText(t);}
+function bindAssessment(){
+ document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const q=+b.dataset.q;document.querySelectorAll('.opt[data-q="'+q+'"]').forEach(x=>x.classList.remove("sel"));b.classList.add("sel");answers[q]=b.dataset.a});
+ $("newSeg").onclick=()=>openAnnotation({start:0,end:Math.min(1.5,durationSec()),category:"Event",label:"",index:-1});
+ $("submit").onclick=submitAssessment;
+}
+function openAnnotation(x){
+ selectedIndex=x.index??-1;
+ const panel=$("annotationPanel");panel.classList.remove("hidden");
+ const cats=["Speech","Music","Event","Ambience","Artificial"];const icons={Speech:"🗣",Music:"♪",Event:"•",Ambience:"≋",Artificial:"◇"};
+ panel.innerHTML='<div class="annotation-head"><div class="annotation-title">Segment Annotation</div><div class="annotation-time">'+timeText(x.start)+' — '+timeText(x.end)+' &nbsp; ('+Math.max(0,x.end-x.start).toFixed(2)+'s)</div><button type="button" class="tiny-control" id="closeAnn">Close</button></div><div class="small" style="margin-bottom:7px">1. SOUND CATEGORY <span style="color:#ffb74d">*</span></div><div class="category-grid">'+cats.map(c=>'<button type="button" class="category-btn '+(c===x.category?"selected ":"")+ '" data-cat="'+c+'"><span class="icon">'+icons[c]+'</span>'+c+'</button>').join("")+'</div><div class="annotation-rule">'+(x.category==="Event"?'Distinct sound from one identifiable source with an audible start & end.':x.category==="Ambience"?'Continuous background sound without one distinct moment/source.':x.category==="Speech"?'Talking or singing where words can be made out.':x.category==="Music"?'Music of any sort.':'Sounds that were made or added rather than naturally recorded.')+'</div><div class="name-wrap"><label>2. SOUND NAME / DESCRIPTION <span id="nameReq" style="color:#45d39a">'+(reqName.includes(x.category)?"(REQUIRED FOR "+x.category.toUpperCase()+")":"(NOT REQUIRED)")+'</span></label><input id="l" value="'+esc(x.label||"")+'" placeholder="e.g. dog barking, door slam, footsteps"><div class="name-rule">ⓘ Naming Rule: Name what is audibly heard, not what is visually happening.</div></div><div class="formgrid" style="margin-top:10px"><div><label>Start</label><input id="s" type="number" min="0" step=".01" value="'+Number(x.start).toFixed(2)+'"></div><div><label>End</label><input id="e" type="number" min="0" step=".01" value="'+Number(x.end).toFixed(2)+'"></div></div><div class="actions"><button type="button" class="tiny-control" id="saveAnn">Save Segment</button><button type="button" class="tiny-control tiny-danger" id="deleteAnn">Delete</button></div><div class="notice" style="margin-top:10px"><b>Key Concept:</b> Set boundaries where the sound is actually audible. Avoid adding silence before or after the sound.</div>';
+ let cat=x.category;document.querySelectorAll(".category-btn").forEach(b=>b.onclick=()=>{cat=b.dataset.cat;document.querySelectorAll(".category-btn").forEach(y=>y.classList.toggle("selected",y===b));$("nameReq").textContent=reqName.includes(cat)?"(REQUIRED FOR "+cat.toUpperCase()+")":"(NOT REQUIRED)";});
+ $("closeAnn").onclick=()=>{panel.classList.add("hidden");selectedIndex=-1;renderSegs()};
+ $("saveAnn").onclick=()=>{const st=parseFloat($("s").value),en=parseFloat($("e").value),lab=$("l").value.trim();if(!Number.isFinite(st)||!Number.isFinite(en)||en<=st){alert("Enter a valid start and end time.");return}if(reqName.includes(cat)&&!lab){alert("This category requires a sound name/description.");return}const obj={start:st,end:en,category:cat,label:lab};if(selectedIndex>=0)annotations[selectedIndex]=obj;else{annotations.push(obj);selectedIndex=annotations.length-1}renderSegs();openAnnotation({...obj,index:selectedIndex});};
+ $("deleteAnn").onclick=()=>{if(selectedIndex>=0)annotations.splice(selectedIndex,1);panel.classList.add("hidden");selectedIndex=-1;renderSegs()};
+}
+function catIndex(c){return ["Speech","Music","Event","Ambience","Artificial"].indexOf(c)<0?2:["Speech","Music","Event","Ambience","Artificial"].indexOf(c)}
+function renderSegs(){
+ const d=durationSec();$("segroot").innerHTML="";$("rows").innerHTML="";$("segCount").textContent=annotations.length+" segment"+(annotations.length===1?"":"s")+" placed";
+ annotations.forEach((x,i)=>{const el=document.createElement("div");el.className="seg "+x.category.toLowerCase()+(i===selectedIndex?" selected":"");el.style.left=(x.start/d*100)+"%";el.style.width=Math.max(.8,(x.end-x.start)/d*100)+"%";el.style.top=(catIndex(x.category)*41+5)+"px";el.textContent=x.category+(x.label?" • "+x.label:"");el.onclick=ev=>{ev.stopPropagation();openAnnotation({...x,index:i})};$("segroot").appendChild(el);
+ const r=document.createElement("div");r.className="row";r.innerHTML="<span>"+fmt(x.start)+"s</span><span>"+fmt(x.end)+"s</span><span><b>"+esc(x.category)+"</b>"+(x.label?" — "+esc(x.label):"")+'</span><button type="button">×</button>';r.querySelector("button").onclick=()=>{annotations.splice(i,1);if(selectedIndex===i){selectedIndex=-1;$("annotationPanel").classList.add("hidden")}renderSegs()};$("rows").appendChild(r)});
+ const bar=$("selectedBar");if(bar){if(selectedIndex>=0&&annotations[selectedIndex]){const x=annotations[selectedIndex];bar.classList.remove("hidden");bar.innerHTML='<span>Selected Segment: <b>'+esc(x.category)+'</b> <span class="toolbar-time">'+timeText(x.start)+' → '+timeText(x.end)+'</span></span><span><button type="button" class="tiny-control" id="shiftStart">Start ‹</button> <button type="button" class="tiny-control" id="shiftEnd">End ›</button> <button type="button" class="tiny-control tiny-danger" id="quickDelete">Delete</button></span>';$("shiftStart").onclick=()=>{x.start=Math.max(0,x.start-.05);renderSegs();openAnnotation({...x,index:selectedIndex})};$("shiftEnd").onclick=()=>{x.end=Math.min(d,x.end+.05);renderSegs();openAnnotation({...x,index:selectedIndex})};$("quickDelete").onclick=()=>{annotations.splice(selectedIndex,1);selectedIndex=-1;bar.classList.add("hidden");$("annotationPanel").classList.add("hidden");renderSegs()}}else bar.classList.add("hidden")}
+}
+function labelOK(u,t){if(!t.labels.length)return true;const x=(u||"").toLowerCase().trim();return t.labels.some(a=>x===a.toLowerCase()||x.includes(a.toLowerCase())||a.toLowerCase().includes(x))}
+function evaluate(){
+ const truth=DATA.truth,used=new Set();let detected=0,cls=0,timing=0,named=0,nameTotal=0,miss=0,extra=0;
+ truth.forEach((t,ti)=>{let bi=-1,bs=1e9;annotations.forEach((u,ui)=>{if(used.has(ui))return;const ov=Math.max(0,Math.min(t.end,u.end)-Math.max(t.start,u.start));if(ov<=0)return;const score=(Math.max(t.end,u.end)-Math.min(t.start,u.start))-ov;if(score<bs){bs=score;bi=ui}});if(bi<0){miss++;return}used.add(bi);detected++;const u=annotations[bi];if(u.category===t.category)cls++;if(Math.abs(u.start-t.start)<=DATA.config.tolerance&&Math.abs(u.end-t.end)<=DATA.config.tolerance)timing++;if(t.labels.length){nameTotal++;if(labelOK(u.label,t))named++}});
+ extra=annotations.filter((_,i)=>!used.has(i)).length;
+ const det=truth.length?detected/truth.length:1,cl=detected?cls/detected:0,tm=truth.length?timing/truth.length:0,nm=nameTotal?named/nameTotal:1;
+ const mcqTotal=DATA.questions.slice(0,DATA.config.aCount).length,mcqCorrect=DATA.questions.slice(0,DATA.config.aCount).filter((q,i)=>answers[i]===q.correct).length,mcq=mcqTotal?mcqCorrect/mcqTotal:1;
+ const overall=Math.round((mcq*.20+det*.25+cl*.20+tm*.25+nm*.10)*100);
+ return {mcqCorrect,mcqTotal,mcq,det,cl,tm,nm,overall,miss,extra};
+}
+async function submitAssessment(){
+ if(submitted)return;
+ const qTotal=DATA.questions.slice(0,DATA.config.aCount).length;if(answers.filter(Boolean).length<qTotal){$("submitMsg").className="feedback bad";$("submitMsg").textContent="Please answer every knowledge question before submitting.";return}
+ if(!annotations.length){$("submitMsg").className="feedback bad";$("submitMsg").textContent="Add at least one segmentation annotation before submitting.";return}
+ const r=evaluate(),name=$("name").value.trim(),email=$("email").value.trim();
+ const payload={action:"submit",attemptId,name,email,attemptPolicy:DATA.config.attemptPolicy,assessmentVersion:"v1",mcqScore:r.mcqCorrect,mcqTotal:r.mcqTotal,detectionScore:Math.round(r.det*100),classificationScore:Math.round(r.cl*100),timingScore:Math.round(r.tm*100),namingScore:Math.round(r.nm*100),overallScore:r.overall,submittedAt:new Date().toISOString(),answers,annotations};
+ if(DATA.config.endpoint){
+  $("submitMsg").className="feedback";$("submitMsg").textContent="Submitting assessment…";$("submit").disabled=true;
+  try{const resp=await fetch(DATA.config.endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});const j=await resp.json();if(!j.ok){$("submit").disabled=false;$("submitMsg").className="feedback bad";$("submitMsg").textContent=j.duplicate?"This assessment has already been submitted.":("Submission failed: "+(j.error||"Unknown error"));return}}catch(e){$("submit").disabled=false;$("submitMsg").className="feedback bad";$("submitMsg").textContent="Submission failed because the data endpoint could not be reached.";return}
+ }
+ submitted=true;localStorage.setItem("soundDetectiveSubmitted:"+((email||attemptId).toLowerCase()),"1");
+ show("result");renderResult(r);
+}
+function renderResult(r){
+ $("resultIntro").textContent=DATA.config.showScore==="yes"?"Your response was recorded and your performance has been summarized below.":"Your response was recorded.";
+ if(DATA.config.showScore==="yes")$("resultMetrics").innerHTML='<div class="metric"><div class="score">'+r.overall+'%</div><div class="small">Overall</div></div><div class="metric"><b>'+r.mcqCorrect+'/'+r.mcqTotal+'</b><div class="small">Knowledge</div></div><div class="metric"><b>'+Math.round(r.det*100)+'%</b><div class="small">Detection</div></div><div class="metric"><b>'+Math.round(r.tm*100)+'%</b><div class="small">Timeline precision</div></div>';
+ else $("resultMetrics").innerHTML="";
+ $("resultNote").textContent="Thank you. Your final assessment response has been submitted.";
+}
+${"<"+"/script>"}</body></html>`;
+ return learner;
+}
+$("exportGame").addEventListener("click",()=>{if(!state.truth.length){alert("Add at least one final segmentation answer-key segment before exporting.");return}if(!state.config.aSegUrl){alert("Add the final segmentation media URL before exporting.");return}const out=learnerHTML();download("sound-detective-final-assessment.html",out,"text/html;charset=utf-8");$("exportStatus").className="notice";$("exportStatus").textContent="Learner HTML exported successfully."});
+renderPractice();renderQuestions();renderTruth();updateStats();syncConfig();
+})();
+</script>
+</body>
+</html>
